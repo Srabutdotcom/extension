@@ -6,7 +6,7 @@ export class Empty extends Uint8Array {
 }
 
 /**
- * https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.10
+ * LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.10
  */
 export class EarlyDataIndication extends Uint32 {
    static client_hello() { return Empty.of()}

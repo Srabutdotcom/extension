@@ -1,5 +1,5 @@
 //@ts-self-types="../type/cookie.d.ts"
-//LINK- https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.2
+//LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.2
 export class Cookie extends Constrained {
    opaque
    static fromOpaque(opaque){ return new Cookie(opaque)}

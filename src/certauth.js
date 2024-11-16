@@ -1,4 +1,5 @@
 // @ts-self-types="../type/certauth.d.ts"
+//LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.4
 import { Constrained, Uint16 } from "./dep.ts";
 
 export class DistinguishedName extends Constrained {

@@ -1,5 +1,5 @@
 // @ts-self-types="../type/oidfilter.d.ts"
-// https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.5
+// LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.5
 
 export class OIDFilter extends Struct {
    certificate_extension_oid;

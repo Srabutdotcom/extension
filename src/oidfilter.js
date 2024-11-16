@@ -1,6 +1,8 @@
 // @ts-self-types="../type/oidfilter.d.ts"
 // LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.5
 
+import { Uint16, Uint8, Struct, Constrained } from "./dep.ts";
+
 export class OIDFilter extends Struct {
    certificate_extension_oid;
    certificate_extension_values;
@@ -24,7 +26,7 @@ export class OIDFilter extends Struct {
 export class OIDFilterExtension extends Constrained {
    static from(array) {
       const copy = Uint8Array.from(array)
-      const lengthOf = Byte(copy.subarray(0, 2)).value;
+      const lengthOf = Uint16.from(copy.subarray(0, 2)).value;
       const oidfilters = []
       for(let offset = 2; offset< lengthOf+2;){
          const oidFilter = OIDFilter.from(copy.subarray(offset));

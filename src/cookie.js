@@ -1,4 +1,5 @@
 //@ts-self-types="../type/cookie.d.ts"
+import { Constrained, Uint16 } from "./dep.ts"
 //LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.2
 export class Cookie extends Constrained {
    opaque

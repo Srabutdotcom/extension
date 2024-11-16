@@ -1,3 +1,4 @@
+// @ts-self-types="../type/extension.d.ts"
 import { Constrained, Uint16, ExtensionType } from "./dep.ts";
 
 export class ExtensionData extends Constrained {

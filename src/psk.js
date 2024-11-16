@@ -1,5 +1,5 @@
 //@ts-self-types="../type/psk.d.ts"
-import { Constrained, Struct, Uint16, Uint32, Uint8 } from "./dep.js";
+import { Constrained, Struct, Uint16, Uint32, Uint8 } from "./dep.ts";
 
 //LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.11
 

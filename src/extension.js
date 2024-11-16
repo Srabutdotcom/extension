@@ -1,6 +1,6 @@
 // @ts-self-types="../type/extension.d.ts"
 //LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2
-import { Constrained, Uint16, ExtensionType } from "./dep.ts";
+import { Constrained, Uint16, ExtensionType, Struct } from "./dep.ts";
 
 export class ExtensionData extends Constrained {
    opaque

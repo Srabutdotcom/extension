@@ -1,4 +1,4 @@
-import { Constrained, Uint16, Struct } from "../src/dep.js";
+import { Constrained, Uint16, Struct } from "../src/dep.ts";
 /**
  * Represents an Identity in the Pre-Shared Key Extension.
  */

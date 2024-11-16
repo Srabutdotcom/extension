@@ -1,4 +1,4 @@
-import { Constrained, Uint16, ExtensionType } from "./dep.js";
+import { Constrained, Uint16, ExtensionType } from "./dep.ts";
 
 export class ExtensionData extends Constrained {
    opaque

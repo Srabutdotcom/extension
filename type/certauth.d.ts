@@ -1,5 +1,5 @@
 
-import { Constrained } from "../src/dep.js";
+import { Constrained } from "../src/dep.ts";
 
 /**
  * Represents a Distinguished Name (DN) in a certificate.

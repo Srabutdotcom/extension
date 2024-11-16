@@ -1,4 +1,4 @@
-import { Constrained, Struct } from "../src/dep.js";
+import { Constrained, Struct } from "../src/dep.ts";
 
 /**
  * Represents an OIDFilter containing a certificate extension OID and its associated values.

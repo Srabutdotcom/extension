@@ -1,4 +1,4 @@
-import { Constrained } from "../src/dep.js";
+import { Constrained } from "../src/dep.ts";
 /**
  * Represents the `Cookie` structure, which is defined as `opaque cookie<1..2^16-1>` in TLS specifications.
  */

@@ -1,4 +1,4 @@
-import { Uint32 } from "../src/dep.js";
+import { Uint32 } from "../src/dep.ts";
 /**
  * Represents an empty array, extending `Uint8Array`.
  */

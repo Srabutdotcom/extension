@@ -1,4 +1,4 @@
-import { Uint16 } from "../src/dep.js";
+import { Uint16 } from "../src/dep.ts";
 
 /**
  * Represents the Record Size Limit in a TLS context, extending `Uint16`.

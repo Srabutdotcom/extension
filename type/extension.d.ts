@@ -1,4 +1,4 @@
-import { Constrained, Struct, Uint16 } from "../src/dep.js";
+import { Constrained, Struct, Uint16 } from "../src/dep.ts";
 
 /**
  * Represents extension data in a TLS context.

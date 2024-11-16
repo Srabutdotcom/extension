@@ -1,5 +1,5 @@
 // @ts-self-types="../type/edi.d.ts"
-import { Uint32 } from "./dep.js";
+import { Uint32 } from "./dep.ts";
 
 export class Empty extends Uint8Array {
    constructor(){super(0)}

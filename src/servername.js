@@ -1,5 +1,5 @@
 //@ts-self-types="../type/servername.d.ts"
-import { Constrained, Struct, Uint16 } from "./dep.js";
+import { Constrained, Struct, Uint16 } from "./dep.ts";
 //LINK - https://datatracker.ietf.org/doc/html/rfc6066#section-3
 
 export class HostName extends Constrained {

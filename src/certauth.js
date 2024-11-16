@@ -1,5 +1,5 @@
 // @ts-self-types="../type/certauth.d.ts"
-import { Constrained, Uint16 } from "./dep.js";
+import { Constrained, Uint16 } from "./dep.ts";
 
 export class DistinguishedName extends Constrained {
    opaque

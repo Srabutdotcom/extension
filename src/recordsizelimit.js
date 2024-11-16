@@ -1,5 +1,5 @@
 //@ts-self-types="../type/recordsizelimit.d.ts"
-import { Uint16 } from "./dep.js";
+import { Uint16 } from "./dep.ts";
 
 /**
  * Represents the Record Size Limit in a TLS context, extending Uint16.

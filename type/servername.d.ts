@@ -1,4 +1,4 @@
-import { Constrained, Struct } from "../src/dep.js";
+import { Constrained, Struct } from "../src/dep.ts";
 
 /**
  * Represents a `HostName` defined as an opaque structure with constraints.

@@ -10,6 +10,7 @@ the relevant TLS 1.3 protocol structures and processes.
 
 - [x] 4.2.1. Supported Versions
 - [x] 4.2.2. Cookie
+- [x] 4.2.3. Signature Algorithms
 - [x] 4.2.4. Certificate Authorities
 - [x] 4.2.5. OID Filters
 - [x] 4.2.6. Post-Handshake Client Authentication
@@ -21,7 +22,6 @@ the relevant TLS 1.3 protocol structures and processes.
 
 ### Pending Work
 
-- [ ] 4.2.3. Signature Algorithms
 - [ ] 4.2.7. Supported Groups
 - [ ] 4.2.8. Key Share
 

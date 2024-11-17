@@ -16,12 +16,8 @@ the relevant TLS 1.3 protocol structures and processes.
 - [x] 4.2.9. Pre-Shared Key Exchange Modes
 - [x] 4.2.10. Early Data Indication
 - [x] 4.2.11. Pre-Shared Key Extension
--
-  4. [x] The "record_size_limit" Extension
-         https://datatracker.ietf.org/doc/html/rfc8449#section-4
--
-  3. [x] Server Name Indication
-         https://datatracker.ietf.org/doc/html/rfc6066#section-3
+- [x] 4. The "record_size_limit" Extension https://datatracker.ietf.org/doc/html/rfc8449#section-4
+- [x] 3. Server Name Indication https://datatracker.ietf.org/doc/html/rfc6066#section-3
 
 ### Pending Work
 

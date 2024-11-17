@@ -15,6 +15,7 @@ the relevant TLS 1.3 protocol structures and processes.
 - [x] 4.2.5. OID Filters
 - [x] 4.2.6. Post-Handshake Client Authentication
 - [x] 4.2.7. Supported Groups
+- [x] 4.2.8. Key Share
 - [x] 4.2.9. Pre-Shared Key Exchange Modes
 - [x] 4.2.10. Early Data Indication
 - [x] 4.2.11. Pre-Shared Key Extension
@@ -23,7 +24,7 @@ the relevant TLS 1.3 protocol structures and processes.
 
 ### Pending Work
 
-- [ ] 4.2.8. Key Share
+- [ ] None
 
 ## Example
 

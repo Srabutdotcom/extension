@@ -5,6 +5,7 @@ This project implements the [specific section] from [RFC 8446](https://datatrack
 ## Work Status
 
 ### Completed Work
+- [x] 4.2.1.  Supported Versions
 - [x] 4.2.2.  Cookie
 - [x] 4.2.4.  Certificate Authorities
 - [x] 4.2.5.  OID Filters
@@ -16,7 +17,6 @@ This project implements the [specific section] from [RFC 8446](https://datatrack
 - [x] 3.  Server Name Indication https://datatracker.ietf.org/doc/html/rfc6066#section-3
 
 ### Pending Work
-- [ ] 4.2.1.  Supported Versions
 - [ ] 4.2.3.  Signature Algorithms
 - [ ] 4.2.7.  Supported Groups
 - [ ] 4.2.8.  Key Share

@@ -1,3 +1,4 @@
+//@ts-self-types="../type/pskxmode.d.ts"
 import { Constrained, PskKeyExchangeMode } from "./dep.ts";
 
 export class PskKeyExchangeModes extends Constrained {

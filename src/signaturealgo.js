@@ -1,7 +1,6 @@
 //@ts-self-types = "../type/signaturealgo.d.ts"
-import { SignatureScheme } from "@tls/enum";
 import { Constrained, Uint16 } from "./dep.ts";
-import { Struct } from "./dep.ts";
+import { Struct, SignatureScheme } from "./dep.ts";
 
 export class Supported_signature_algorithms extends Constrained {
    static default(){

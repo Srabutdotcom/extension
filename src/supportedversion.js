@@ -1,6 +1,5 @@
 //@ts-self-types="../type/supportedversion.d.ts"
-import { Version } from "@tls/enum";
-import { ProtocolVersion } from "./dep.ts";
+import { ProtocolVersion, Version } from "./dep.ts";
 import { Constrained } from "./dep.ts";
 import { Struct } from "./dep.ts";
 

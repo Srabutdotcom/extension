@@ -53,3 +53,21 @@ export class ServerName extends Struct {
       return this.hostname.name;
    }
 }
+
+export class ServerNameList extends Constrained {
+   serverName
+   static fromName(name){
+      const serverName = ServerName.fromName(name);
+      return new ServerNameList(serverName)
+   }
+   static from(array){
+      const copy = Uint8Array.from(array);
+      const lengthOf = Uint16.from(copy).value;
+      const serverName = ServerName.from(copy.subarray(2, 2+ lengthOf ));
+      return new ServerNameList(serverName)
+   }
+   constructor(serverName){
+      super(1,2**16-1, serverName);
+      this.serverName = serverName
+   }
+}

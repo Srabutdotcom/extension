@@ -24,4 +24,3 @@ Deno.test("SupportedVersions for server_hello", () => {
    const back = SupportedVersions.fromServer_hello(test);
    assertEquals(test, back)
 })
-

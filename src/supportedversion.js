@@ -11,6 +11,7 @@ export class SupportedVersions extends Struct {
       return new SupportedVersions(Selected_version.default());
    }
    static fromClient_hello(array) {
+      return Versions.from(array)
       const versions = Versions.from(array)
       const supportedVersions = new SupportedVersions(versions);
       supportedVersions.versions = versions;
@@ -28,19 +29,19 @@ export class SupportedVersions extends Struct {
 }
 
 export class Versions extends Constrained {
-   static default() { return new Versions(Version.TLS13.protocolVersion()) }
+   static default() { return new Versions(Version.TLS13) }
    static from(array) {
       const copy = Uint8Array.from(array);
       const lengthOf = copy.at(0);
       const versions = [];
       for (let offset = 1; offset < lengthOf + 1;) {
-         const version = ProtocolVersion.from(copy.subarray(offset));
+         const version = Version.from(copy.subarray(offset));
          versions.push(version); offset += version.length;
       }
       return new Versions(...versions)
    }
    constructor(...versions) {
-      super(2, 254, ...versions)
+      super(2, 254, ...versions.map(e=>e.protocolVersion()))
       this.versions = versions
    }
 }

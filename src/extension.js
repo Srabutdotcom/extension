@@ -4,15 +4,15 @@ import { Constrained, Uint16, ExtensionType, Struct } from "./dep.ts";
 
 export class ExtensionData extends Constrained {
    opaque
-   static fromOpaque(opaque){ return new ExtensionData(opaque)}
+   static fromOpaque(opaque) { return new ExtensionData(opaque) }
    static from(array) {
       const copy = Uint8Array.from(array);
       const lengthOf = Uint16.from(copy).value; // First 2 bytes represent the length
       const extensionData = copy.subarray(2, lengthOf + 2);
       return new ExtensionData(extensionData);
-    }
-   constructor(opaque){
-      super(0,2**16-1,opaque)
+   }
+   constructor(opaque) {
+      super(0, 2 ** 16 - 1, opaque)
       this.opaque = opaque
    }
 }

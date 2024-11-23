@@ -22,7 +22,7 @@ export class HostName extends Constrained {
    }
 
    get name() {
-      return new TextDecoder().decode(this.hostnameByte);
+      return new TextDecoder().decode(this.opaque);
    }
 }
 

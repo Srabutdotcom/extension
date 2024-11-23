@@ -13,3 +13,4 @@ Deno.test("ServerNameList", () => {
    const back = ServerNameList.from(test);
    assertEquals(test, back)
 })
+

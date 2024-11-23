@@ -5,23 +5,16 @@ import { Struct } from "./dep.ts";
 
 export class SupportedVersions extends Struct {
    static forClient_hello() {
-      return new SupportedVersions(Versions.default());
+      return Versions.default();
    }
    static forServer_hello() {
-      return new SupportedVersions(Selected_version.default());
+      return Selected_version.default();
    }
    static fromClient_hello(array) {
       return Versions.from(array)
-      const versions = Versions.from(array)
-      const supportedVersions = new SupportedVersions(versions);
-      supportedVersions.versions = versions;
-      return supportedVersions
    }
    static fromServer_hello(array) {
-      const selected_version = Selected_version.from(array);
-      const supportedVersions = new SupportedVersions(selected_version);
-      supportedVersions.selected_version = selected_version;
-      return supportedVersions
+      return Selected_version.from(array);
    }
    constructor(version) {
       super(version)

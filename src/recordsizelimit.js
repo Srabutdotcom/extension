@@ -12,8 +12,7 @@ export class RecordSizeLimit extends Uint16 {
 
    static from(array) {
       const copy = Uint8Array.from(array)
-      const value = Uint16.from(copy).value;
-      return new RecordSizeLimit(value)
+      return new RecordSizeLimit(copy)
    }
 
    static fromValue(value) { new RecordSizeLimit(value) }

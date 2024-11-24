@@ -96,7 +96,7 @@ export class KeyShareServerHello extends Uint16 {
 
    static from(array) {
       const copy = Uint8Array.from(array)
-      const keyShareEntry = KeyShareEntry.from(copy.subarray(offset));
+      const keyShareEntry = KeyShareEntry.from(copy);
       return new KeyShareServerHello(keyShareEntry)
    }
 

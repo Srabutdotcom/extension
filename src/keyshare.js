@@ -90,7 +90,7 @@ export class KeyShareHelloRetryRequest extends Uint16 {
  * Represents a KeyShare extension in the ServerHello message in TLS handshake.
  * This class holds a single KeyShareEntry and manages its constraints.
  */
-export class KeyShareServerHello extends Uint16 {
+export class KeyShareServerHello extends Uint8Array {
 
    static fromKeyShareEntry(keyShareEntry) { return new KeyShareServerHello(keyShareEntry) }
 

@@ -112,7 +112,7 @@ export class KeyShareHelloRetryRequest extends Uint16 {
 /**
  * Represents the KeyShare extension in the ServerHello message.
  */
-export class KeyShareServerHello extends Uint16 {
+export class KeyShareServerHello extends Uint8Array {
   /**
    * Creates a KeyShareServerHello from a KeyShareEntry.
    * @param {KeyShareEntry} keyShareEntry - The key share entry.

@@ -1,7 +1,6 @@
 export * from "./certauth.js"
 export * from "./cookie.js"
 export * from "./edi.js"
-export * from "./extension.js"
 export * from "./keyshare.js"
 export * from "./oidfilter.js"
 export * from "./psk.js"

@@ -25,7 +25,7 @@ export class KeyShareClientHello extends Constrained {
 
    constructor(...keyShareEntries) {
       super(0, 65535, ...keyShareEntries)
-      this.keyShareEntries = keyShareEntries
+      this.keyShareEntries = new Set(keyShareEntries)
    }
 }
 

@@ -60,7 +60,15 @@ export class Identities extends Constrained {
    static from(array) {
       const copy = Uint8Array.from(array);
       const lengthOf = Uint16.from(copy).value;
-      const identities = copy.subarray(2, lengthOf + 2);
+      const data = copy.subarray(2, lengthOf + 2);
+      const identities = [];
+      let offset = 0;
+      while (true) {
+         const pskIdentity = PskIdentity.from(data.subarray(offset));
+         offset += pskIdentity.length;
+         identities.push(pskIdentity);
+         if (offset >= data.length) break;
+      }
       return new Identities(...identities);
    }
 
@@ -78,7 +86,15 @@ export class Binders extends Constrained {
    static from(array) {
       const copy = Uint8Array.from(array);
       const lengthOf = Uint16.from(copy).value;
-      const binders = copy.subarray(2, lengthOf + 2);
+      const data = copy.subarray(2, lengthOf + 2);
+      const binders = [];
+      let offset = 0;
+      while (true) {
+         const pskBinderEntry = PskBinderEntry.from(data.subarray(offset));
+         offset += pskBinderEntry.length;
+         binders.push(pskBinderEntry);
+         if (offset >= data.length) break;
+      }
       return new Binders(...binders);
    }
 
@@ -92,7 +108,7 @@ export class OfferedPsks extends Struct {
    static from(array) {
       const copy = Uint8Array.from(array);
       const identities = Identities.from(copy);
-      const binders = Binders.from(copy.subarray(identities.length));
+      const binders = identities.length >= copy.length ? Uint8Array.of() : Binders.from(copy.subarray(identities.length));
       return new OfferedPsks(identities, binders)
    }
    constructor(identities, binders) {
@@ -112,3 +128,4 @@ export class PreSharedKeyExtension {
 const value = PskIdentity.from(test);
 debugger;
  */
+

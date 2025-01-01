@@ -97,6 +97,8 @@ export class OfferedPsks extends Struct {
    }
    constructor(identities, binders) {
       super(identities, binders)
+      this.identities = identities;
+      this.binders = binders;
    }
 }
 

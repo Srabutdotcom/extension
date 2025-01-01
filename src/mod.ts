@@ -10,4 +10,5 @@ export * from "./servername.js"
 export * from "./signaturealgo.js"
 export * from "./supportedgroup.js"
 export * from "./supportedversion.js"
+export * from "./padding.js"
 

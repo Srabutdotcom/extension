@@ -52,6 +52,8 @@ export class ServerName extends Struct {
    get name() {
       return this.hostname.name;
    }
+
+   get byte() { return Uint8Array.from(this)}
 }
 
 export class ServerNameList extends Constrained {
@@ -63,11 +65,17 @@ export class ServerNameList extends Constrained {
    static from(array){
       const copy = Uint8Array.from(array);
       const lengthOf = Uint16.from(copy).value;
-      const serverName = ServerName.from(copy.subarray(2, 2+ lengthOf ));
-      return new ServerNameList(serverName)
+      const serverNames = new Set;
+      let offset = 2;
+      while(true){
+         const serverName = ServerName.from(copy.subarray(offset)); offset+=serverName.byte.length;
+         serverNames.add(serverName);
+         if(offset>=lengthOf+2)break
+      } 
+      return new ServerNameList(...serverNames)
    }
-   constructor(serverName){
-      super(1,2**16-1, serverName);
-      this.serverName = serverName
+   constructor(...serverNames){
+      super(1,2**16-1, ...serverNames);
+      this.serverNames = serverNames
    }
 }

@@ -86,35 +86,34 @@ export class ServerName extends Struct {
 }
 
 /**
- * Represents a list of server names used in the TLS handshake.
- * This class enforces constraints on the length of the server name list and validates its contents.
+ * Represents a list of server names with constraints on the size.
+ * Extends the `Constrained` class to validate the size of the list.
  */
-export class ServerNameList extends Constrained {
+export declare class ServerNameList extends Constrained {
   /**
-   * The `ServerName` instance contained in this `ServerNameList`.
-   */
-  serverName: ServerName;
-
-  /**
-   * Creates a new `ServerNameList` instance from a string name.
-   *
-   * @param name - The server name to include in the list.
-   * @returns A new `ServerNameList` instance containing the provided server name.
+   * Creates a `ServerNameList` instance from a single server name.
+   * @param name - The server name.
+   * @returns A new instance of `ServerNameList` with the provided server name.
    */
   static fromName(name: string): ServerNameList;
 
   /**
-   * Parses a `Uint8Array` and creates a `ServerNameList` instance.
-   *
-   * @param array - A byte array representing the serialized server name list.
-   * @returns A new `ServerNameList` instance based on the parsed array.
+   * Parses a `ServerNameList` instance from a `Uint8Array`.
+   * @param array - The input array containing server name data.
+   * @returns A new instance of `ServerNameList`.
+   * @throws {Error} If the input array is invalid or incomplete.
    */
   static from(array: Uint8Array): ServerNameList;
 
   /**
-   * Constructs a new `ServerNameList` instance.
-   *
-   * @param serverName - The `ServerName` instance to include in the list.
+   * Constructs a `ServerNameList` instance.
+   * @param serverNames - A list of server names.
+   * @throws {Error} If the constraints are not satisfied.
    */
-  constructor(serverName: ServerName);
+  constructor(...serverNames: ServerName[]);
+
+  /**
+   * The list of server names in the `ServerNameList`.
+   */
+  readonly serverNames: ServerName[];
 }

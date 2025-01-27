@@ -1,14 +1,10 @@
 import { assertEquals } from "jsr:@std/assert";
-import { Named_group_list, NamedGroupList } from "../src/supportedgroup.js";
+import { NamedGroupList } from "../src/supportedgroup.js";
+import { NamedGroup } from "../src/dep.ts";
 
-Deno.test("Named_group_list", ()=>{
-   const test =Named_group_list.default();
-   const back =Named_group_list.from(test);
-   assertEquals(test, back)
-})
 
 Deno.test("NamedGroupList", ()=>{
-   const test = NamedGroupList.default();
+   const test = new NamedGroupList(NamedGroup.X25519);
    const back = NamedGroupList.from(test);
    assertEquals(test, back)
 })

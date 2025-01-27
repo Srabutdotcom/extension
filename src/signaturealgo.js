@@ -1,6 +1,7 @@
 //@ts-self-types = "../type/signaturealgo.d.ts"
 import { Constrained, Uint16 } from "./dep.ts";
-import { Struct, SignatureScheme } from "./dep.ts";
+import { SignatureScheme } from "./dep.ts";
+import { parseItems } from "./utils.js";
 
 export class Supported_signature_algorithms extends Constrained {
    static default(){
@@ -34,13 +35,16 @@ export class Supported_signature_algorithms extends Constrained {
    }
 }
 
-export class SignatureSchemeList extends Struct {
-   static default(){ return new SignatureSchemeList(Supported_signature_algorithms.default())}
+export class SignatureSchemeList extends Constrained {
    static from(array){
-      return new SignatureSchemeList(Supported_signature_algorithms.from(array))
+      const copy = Uint8Array.from(array);
+      const lengthOf = Uint16.from(copy).value;
+      const algorithms = parseItems(copy, 2, lengthOf, SignatureScheme);
+      return new SignatureSchemeList(...algorithms)
    }
-   constructor(supported_signature_algorithms){
-      super(supported_signature_algorithms)
+   constructor(...supported_signature_algorithms) {
+      super(2, 2 ** 16 - 2, ...supported_signature_algorithms.map(e => e.Uint16))
+      this.supported_signature_algorithms = supported_signature_algorithms;
    }
 }
 

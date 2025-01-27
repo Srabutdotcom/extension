@@ -1,32 +1,26 @@
-import { Constrained } from "../src/dep.ts"; 
+import { Constrained, PskKeyExchangeMode } from "../src/dep.ts"; 
 
 /**
  * Represents the PSK key exchange modes as a constrained array.
  */
 export declare class PskKeyExchangeModes extends Constrained {
    /**
-    * Constructs a `PskKeyExchangeModes` instance with the provided modes.
-    * @param {...Uint8Array[]} modes - The key exchange modes as `Uint8Array` instances.
+    * Parses a `PskKeyExchangeModes` instance from a `Uint8Array`.
+    * @param array - The input array containing PSK key exchange mode data.
+    * @returns A new instance of `PskKeyExchangeModes`.
+    * @throws {Error} If the input array is invalid or incomplete.
     */
-   constructor(...modes: Uint8Array[]);
-
+   static from(array: Uint8Array): PskKeyExchangeModes;
+ 
    /**
-    * Creates a `PskKeyExchangeModes` instance from a Uint8Array.
-    * @param {Uint8Array | number[]} array - The source array.
-    * @returns {PskKeyExchangeModes} A new `PskKeyExchangeModes` instance.
-    * @throws {RangeError} If the first byte indicates a length of 0.
+    * Constructs a `PskKeyExchangeModes` instance.
+    * @param ke_modes - A list of PSK key exchange modes.
+    * @throws {Error} If the constraints are not satisfied.
     */
-   static from(array: Uint8Array | number[]): PskKeyExchangeModes;
-
+   constructor(...ke_modes: PskKeyExchangeMode[]);
+ 
    /**
-    * Returns a default `PskKeyExchangeModes` instance with the `PSK_DHE_KE` mode.
-    * @returns {PskKeyExchangeModes} A default `PskKeyExchangeModes` instance.
+    * The list of PSK key exchange modes.
     */
-   static default(): PskKeyExchangeModes;
-
-   /**
-    * The modes included in the `PskKeyExchangeModes` instance.
-    * @type {Uint8Array[]}
-    */
-   modes: Uint8Array[];
-}
+   readonly ke_modes: PskKeyExchangeMode[];
+ }

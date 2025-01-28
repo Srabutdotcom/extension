@@ -1,31 +1,29 @@
 //@ts-self-types = "../type/keyshare.d.ts"
 import { Constrained, Uint16, NamedGroup, KeyShareEntry } from "./dep.ts";
+import { parseItems } from "./utils.js";
 
 /**
  * Represents a KeyShare extension in the ClientHello message in TLS handshake.
  * This class holds multiple KeyShareEntry instances and manages their constraints.
  */
 export class KeyShareClientHello extends Constrained {
-   
+   keyShareEntries = new Map
    static fromKeyShareEntries(...keyShareEntries) {
       return new KeyShareClientHello(...keyShareEntries)
    }
 
    static from(array) {
       const copy = Uint8Array.from(array);
-      const l = Uint16.from(copy.subarray(0, 2)).value;
-      const keyShareEntries = []
-      for (let offset = 2; offset < l;) {
-         const keyShareEntry = KeyShareEntry.from(copy.subarray(offset));
-         keyShareEntries.push(keyShareEntry);
-         offset += keyShareEntry.length
-      }
+      const lengthOf = Uint16.from(copy.subarray(0, 2)).value;
+      const keyShareEntries = parseItems(copy, 2, lengthOf, KeyShareEntry);
       return new KeyShareClientHello(...keyShareEntries);
    }
 
    constructor(...keyShareEntries) {
       super(0, 65535, ...keyShareEntries)
-      this.keyShareEntries = new Set(keyShareEntries)
+      for(const {group, key_exchange} of keyShareEntries){
+         this.keyShareEntries.set(group, key_exchange);
+      }
    }
 }
 
@@ -34,7 +32,7 @@ export class KeyShareClientHello extends Constrained {
  * This class manages the NamedGroup for key share negotiation.
  */
 export class KeyShareHelloRetryRequest extends Uint16 {
-   
+
    static fromGroup(group) { return new KeyShareHelloRetryRequest(group) }
 
    static from(array) {

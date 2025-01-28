@@ -1,4 +1,6 @@
+import { KeyShareClientHello } from "../src/keyshare.js";
 import { KeyShareServerHello } from "../src/keyshare.js";
+import { NamedGroup } from "../src/dep.ts";
 import { assertEquals } from "@std/assert";
 
 Deno.test("KeyShareServerHello", () => {
@@ -6,3 +8,7 @@ Deno.test("KeyShareServerHello", () => {
    const back = KeyShareServerHello.from(x25519)
    assertEquals(x25519.toString(), back.toString())
 })
+
+const keyShareClientHello = Uint8Array.of(0,36,0,29,0,32,153,56,29,229,96,228,189,67,210,61,142,67,90,125,186,254,179,192,110,81,193,60,174,77,84,19,105,30,82,154,175,44);
+
+const back = KeyShareClientHello.from(keyShareClientHello);

@@ -39,4 +39,5 @@ export declare class Extension extends Uint8Array {
   get data(): Uint8Array;
   set pos(pos: number);
   get pos(): number;
+  set parser(parser: any)
 }

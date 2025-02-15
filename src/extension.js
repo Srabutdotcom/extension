@@ -2,6 +2,7 @@
 import { ExtensionType, safeuint8array, Uint16 } from "./dep.ts";
 
 export class Extension extends Uint8Array {
+   #pos;
    static create(type, data) {
       const lengthOf = Uint16.fromValue(data.length);
       return new Extension(safeuint8array(type.byte, lengthOf, data))
@@ -17,6 +18,12 @@ export class Extension extends Uint8Array {
    get data() {
       const lengthOf = Uint16.from(this.subarray(2)).value; // First 2 bytes represent the length
       return this.subarray(4, lengthOf + 4);
+   }
+   set pos(pos){
+      this.#pos = pos;
+   }
+   get pos(){
+      return this.#pos;
    }
 }
 

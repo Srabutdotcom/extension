@@ -22,5 +22,5 @@ export class Extension extends Uint8Array {
 
 function sanitize(array){
    const lengthOf = Uint16.from(array.subarray(2)).value;
-   return array.slice(0, 4 + lengthOf);
+   return [array.slice(0, 4 + lengthOf)];
 }

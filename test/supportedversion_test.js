@@ -1,10 +1,9 @@
 import { assertEquals } from "jsr:@std/assert";
-import { Selected_version, Versions } from "../src/supportedversion.js";
+import { Versions } from "../src/supportedversion.js";
 
 const supportedVersions = Uint8Array.of(0x04, 0x03, 0x04, 0x03, 0x03);
 const supportedVersionsBack = Versions.from(supportedVersions);
 
-debugger;
 
 /* Deno.test("Selected_version", () => {
    const test = Selected_version.default();

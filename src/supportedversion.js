@@ -2,43 +2,45 @@
 import { Version } from "./dep.ts";
 import { parseItems } from "./utils.js"
 
-export class ProtocolVersion {
-   #version
+export class ProtocolVersion extends Uint8Array {
    static from(array) { return new ProtocolVersion(array) }
    static sanitize(array) {
       try {
-         return Version.from(array).byte;
+         const output = Version.from(array).byte;
+         return [output]
       } catch (error) {
          throw error
       }
    }
-   constructor(array) {
-      this.#version = ProtocolVersion.sanitize(array)
+   constructor(...args) {
+      args = (args[0] instanceof Uint8Array) ? ProtocolVersion.sanitize(args[0]) : args
+      super(...args)
    }
    get version() {
-      return Version.from(this.#version);
+      return Version.from(this);
    }
-   get length() { return 2 }
 }
 /**
  * ProtocolVersion versions<2..254>;
  */
-export class Versions {
-   #_array
+export class Versions extends Uint8Array {
    #versions
    static default() { return Versions.from(Uint8Array.of(4, 3, 4, 3, 3)) }
    static sanitize(array) {
       const lengthOf = array.at(0);
       if (lengthOf < 2) throw Error(`Expected length minimal 2`)
-      return array.slice(1, 1 + lengthOf);
+      return [array.slice(0, 1 + lengthOf)];
    }
    static from(array) { return new Versions(array) }
-   constructor(array) {
-      this.#_array = Versions.sanitize(array)
-      this.#versions = parseItems(this.#_array, 0, this.#_array.length, ProtocolVersion)
+   constructor(...args) {
+      args = (args[0] instanceof Uint8Array) ? Versions.sanitize(args[0]) : args
+      super(...args)
+      //this.#versions ||= parseItems(this, 1, this.length - 1, ProtocolVersion)
    }
-   get versions() { return this.#versions }
-   get length() { return this.versions.size * 2 }
+   get versions() { 
+      this.#versions ||= parseItems(this, 1, this.length - 1, ProtocolVersion)
+      return this.#versions 
+   }
 }
 
 export const Selected_version = ProtocolVersion

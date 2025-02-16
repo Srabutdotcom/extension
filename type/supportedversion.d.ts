@@ -82,6 +82,7 @@ export class Versions {
     * @returns {ProtocolVersion[]} - An array of `ProtocolVersion` instances.
     */
    get versions(): ProtocolVersion[];
+   get length(): number;
 }
 
 /**

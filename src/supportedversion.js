@@ -38,7 +38,7 @@ export class Versions {
       this.#versions = parseItems(this.#_array, 0, this.#_array.length, ProtocolVersion)
    }
    get versions() { return this.#versions }
-
+   get length() { return this.versions.size * 2 }
 }
 
 export const Selected_version = ProtocolVersion

@@ -1,87 +1,87 @@
-import { Struct, Constrained } from "../src/dep.ts"; // Update the import paths as necessary
-import { ProtocolVersion } from "../src/dep.ts"; // Assuming `ProtocolVersion` and `Version` are defined elsewhere
+import { Version } from "@tls/enum";
 
 /**
- * Represents the supported protocol versions in a TLS handshake.
+ * Represents a specific protocol version.
  */
-export declare class SupportedVersions extends Struct {
-   /**
-    * Creates a `SupportedVersions` instance for a client hello message.
-    * @returns {SupportedVersions} A new instance for client hello.
-    */
-   static forClient_hello(): SupportedVersions;
+export class ProtocolVersion {
+   /** @type {Uint8Array} Private field storing the protocol version */
+   #version: Uint8Array;
 
    /**
-    * Creates a `SupportedVersions` instance for a server hello message.
-    * @returns {SupportedVersions} A new instance for server hello.
+    * Creates a new `ProtocolVersion` instance from a `Uint8Array`.
+    * @param {Uint8Array} array - The array containing the protocol version.
+    * @returns {ProtocolVersion} - A new instance of `ProtocolVersion`.
     */
-   static forServer_hello(): SupportedVersions;
+   static from(array: Uint8Array): ProtocolVersion;
 
    /**
-    * Creates a `SupportedVersions` instance from a client hello array.
-    * @param {Uint8Array | number[]} array - The array representing client hello versions.
-    * @returns {SupportedVersions} A new instance from client hello data.
+    * Validates and extracts the protocol version from an array.
+    * @param {Uint8Array} array - The array containing the version data.
+    * @returns {Uint8Array} - Sanitized version data.
+    * @throws {Error} If the input array does not contain a valid version.
     */
-   static fromClient_hello(array: Uint8Array | number[]): SupportedVersions;
+   static sanitize(array: Uint8Array): Uint8Array;
 
    /**
-    * Creates a `SupportedVersions` instance from a server hello array.
-    * @param {Uint8Array | number[]} array - The array representing server hello version.
-    * @returns {SupportedVersions} A new instance from server hello data.
+    * Constructs a `ProtocolVersion` instance.
+    * @param {Uint8Array} array - The array containing the protocol version.
     */
-   static fromServer_hello(array: Uint8Array | number[]): SupportedVersions;
+   constructor(array: Uint8Array);
 
    /**
-    * Constructs a `SupportedVersions` instance.
-    * @param {Versions | Selected_version} version - The supported versions or selected version.
+    * Gets the protocol version.
+    * @returns {Version} - The `Version` object representing the protocol version.
     */
-   constructor(version: Versions | Selected_version);
+   get version(): Version;
+
+   /**
+    * Gets the length of the protocol version.
+    * @returns {number} - Always returns `2`.
+    */
+   get length(): number;
 }
 
 /**
- * Represents the supported protocol versions as a constrained array.
+ * Represents multiple protocol versions.
+ * ProtocolVersion versions<2..254>;
  */
-export declare class Versions extends Constrained {
-   /**
-    * Returns a `Versions` instance with the default protocol version (TLS 1.3).
-    * @returns {Versions} A `Versions` instance with TLS 1.3.
-    */
-   static default(): Versions;
+export class Versions {
+   /** @type {Uint8Array} Private field storing the raw version data */
+   #_array: Uint8Array;
+
+   /** @type {ProtocolVersion[]} Private field storing the parsed versions */
+   #versions: ProtocolVersion[];
 
    /**
-    * Creates a `Versions` instance from an array.
-    * @param {Uint8Array | number[]} array - The array representing protocol versions.
-    * @returns {Versions} A new `Versions` instance.
+    * Validates and extracts protocol versions from an array.
+    * @param {Uint8Array} array - The array containing protocol versions.
+    * @returns {Uint8Array} - Sanitized array containing only valid protocol versions.
+    * @throws {Error} If the length of the array is less than 2.
     */
-   static from(array: Uint8Array | number[]): Versions;
+   static sanitize(array: Uint8Array): Uint8Array;
+
+   /**
+    * Creates a new `Versions` instance from a `Uint8Array`.
+    * @param {Uint8Array} array - The array containing protocol versions.
+    * @returns {Versions} - A new instance of `Versions`.
+    */
+   static from(array: Uint8Array): Versions;
 
    /**
     * Constructs a `Versions` instance.
-    * @param {...ProtocolVersion[]} versions - The protocol versions.
+    * @param {Uint8Array} array - The array containing protocol versions.
     */
-   constructor(...versions: ProtocolVersion[]);
+   constructor(array: Uint8Array);
 
    /**
-    * The list of protocol versions.
-    * @type {ProtocolVersion[]}
+    * Gets the parsed protocol versions.
+    * @returns {ProtocolVersion[]} - An array of `ProtocolVersion` instances.
     */
-   versions: ProtocolVersion[];
+   get versions(): ProtocolVersion[];
 }
 
 /**
- * Represents a single selected protocol version.
+ * Alias for `ProtocolVersion`, representing the selected version.
  */
-export declare class Selected_version {
-   /**
-    * Returns the default selected protocol version (TLS 1.3).
-    * @returns {ProtocolVersion} The default protocol version.
-    */
-   static default(): ProtocolVersion;
+export const Selected_version: typeof ProtocolVersion;
 
-   /**
-    * Creates a `Selected_version` instance from an array.
-    * @param {Uint8Array | number[]} array - The array representing the selected protocol version.
-    * @returns {ProtocolVersion} The selected protocol version.
-    */
-   static from(array: Uint8Array | number[]): ProtocolVersion;
-}

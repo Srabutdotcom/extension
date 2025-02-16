@@ -1,10 +1,48 @@
 //@ts-self-types="../type/supportedversion.d.ts"
-import { ProtocolVersion, Version } from "./dep.ts";
-import { Constrained } from "./dep.ts";
-import { Struct } from "./dep.ts";
+import { Version } from "./dep.ts";
 import { parseItems } from "./utils.js"
 
-export class SupportedVersions extends Struct {
+export class ProtocolVersion {
+   #version
+   static from(array) { return new ProtocolVersion(array) }
+   static sanitize(array) {
+      try {
+         return Version.from(array).byte;
+      } catch (error) {
+         throw error
+      }
+   }
+   constructor(array) {
+      this.#version = ProtocolVersion.sanitize(array)
+   }
+   get version() {
+      return Version.from(this.#version);
+   }
+   get length(){ return 2 }
+}
+/**
+ * ProtocolVersion versions<2..254>;
+ */
+export class Versions {
+   #_array
+   #versions
+   static sanitize(array) {
+      const lengthOf = array.at(0);
+      if (lengthOf < 2) throw Error(`Expected length minimal 2`)
+      return array.slice(1, 1 + lengthOf); 
+   }
+   static from(array){ return new Versions(array)}
+   constructor(array) {
+      this.#_array = Versions.sanitize(array)
+      this.#versions = parseItems(this.#_array, 0, this.#_array.length, ProtocolVersion)
+   }
+   get versions() { return this.#versions } 
+
+}
+
+export const Selected_version = ProtocolVersion
+
+/* export class SupportedVersions extends Struct {
    static forClient_hello() {
       return Versions.default();
    }
@@ -22,10 +60,12 @@ export class SupportedVersions extends Struct {
    }
 }
 
-export class Versions extends Constrained {
-   static default() { return new Versions(
-      Version.TLS13,
-   ) }
+export class Versions_0 extends Constrained {
+   static default() {
+      return new Versions(
+         Version.TLS13,
+      )
+   }
    static from(array) {
       const copy = Uint8Array.from(array);
       const lengthOf = copy.at(0);
@@ -36,10 +76,10 @@ export class Versions extends Constrained {
       super(2, 254, ...versions.map(e => e.protocolVersion()))
       this.versions = versions
    }
-}
+} */
 
-export class Selected_version {
+/* export class Selected_version {
    static default() { return Version.TLS13.protocolVersion() }
    static from(array) { return ProtocolVersion.from(array) }
-}
+} */
 

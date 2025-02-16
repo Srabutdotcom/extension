@@ -18,7 +18,7 @@ export class ProtocolVersion {
    get version() {
       return Version.from(this.#version);
    }
-   get length(){ return 2 }
+   get length() { return 2 }
 }
 /**
  * ProtocolVersion versions<2..254>;
@@ -26,17 +26,18 @@ export class ProtocolVersion {
 export class Versions {
    #_array
    #versions
+   static default() { return Versions.from(Uint8Array.of(4, 3, 4, 3, 3)) }
    static sanitize(array) {
       const lengthOf = array.at(0);
       if (lengthOf < 2) throw Error(`Expected length minimal 2`)
-      return array.slice(1, 1 + lengthOf); 
+      return array.slice(1, 1 + lengthOf);
    }
-   static from(array){ return new Versions(array)}
+   static from(array) { return new Versions(array) }
    constructor(array) {
       this.#_array = Versions.sanitize(array)
       this.#versions = parseItems(this.#_array, 0, this.#_array.length, ProtocolVersion)
    }
-   get versions() { return this.#versions } 
+   get versions() { return this.#versions }
 
 }
 

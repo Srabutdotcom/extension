@@ -53,6 +53,10 @@ export class Versions {
    #versions: ProtocolVersion[];
 
    /**
+    * @returns { Versions } default value
+    */
+   static default(): Versions
+   /**
     * Validates and extracts protocol versions from an array.
     * @param {Uint8Array} array - The array containing protocol versions.
     * @returns {Uint8Array} - Sanitized array containing only valid protocol versions.

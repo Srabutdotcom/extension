@@ -1,88 +1,94 @@
 import { Version } from "@tls/enum";
 
 /**
- * Represents a specific protocol version.
+ * Represents a TLS protocol version as a `Uint8Array`.
  */
-export class ProtocolVersion {
-   /** @type {Uint8Array} Private field storing the protocol version */
-   #version: Uint8Array;
+export class ProtocolVersion extends Uint8Array {
+   /**
+    * Creates a `ProtocolVersion` instance from various version formats.
+    * @param {Version | Uint8Array | number} version - The version to convert.
+    * @returns {ProtocolVersion} The resulting `ProtocolVersion` instance.
+    */
+   static fromVersion(version: Version | Uint8Array | number): ProtocolVersion;
 
    /**
-    * Creates a new `ProtocolVersion` instance from a `Uint8Array`.
-    * @param {Uint8Array} array - The array containing the protocol version.
-    * @returns {ProtocolVersion} - A new instance of `ProtocolVersion`.
+    * Creates a `ProtocolVersion` instance from an array.
+    * @param {Uint8Array} array - The array representing the version.
+    * @returns {ProtocolVersion} The resulting `ProtocolVersion` instance.
     */
    static from(array: Uint8Array): ProtocolVersion;
 
    /**
-    * Validates and extracts the protocol version from an array.
-    * @param {Uint8Array} array - The array containing the version data.
-    * @returns {Uint8Array} - Sanitized version data.
-    * @throws {Error} If the input array does not contain a valid version.
+    * Validates and extracts the version from an array.
+    * @param {Uint8Array} array - The input array.
+    * @returns {[Uint8Array]} A tuple containing the sanitized version array.
+    * @throws {Error} If the input is invalid.
     */
-   static sanitize(array: Uint8Array): Uint8Array;
+   static sanitize(array: Uint8Array): [Uint8Array];
 
    /**
-    * Constructs a `ProtocolVersion` instance.
-    * @param {Uint8Array} array - The array containing the protocol version.
+    * Constructs a new `ProtocolVersion` instance.
+    * @param {Uint8Array | any[]} args - The arguments for initialization.
     */
-   constructor(array: Uint8Array);
+   constructor(...args: any[]);
 
    /**
-    * Gets the protocol version.
-    * @returns {Version} - The `Version` object representing the protocol version.
+    * Retrieves the `Version` object corresponding to this `ProtocolVersion`.
+    * @returns {Version} The `Version` instance.
     */
    get version(): Version;
-
-   /**
-    * Gets the length of the protocol version.
-    * @returns {number} - Always returns `2`.
-    */
-   get length(): number;
 }
 
 /**
- * Represents multiple protocol versions.
- * ProtocolVersion versions<2..254>;
+ * Represents multiple TLS protocol versions as a `Uint8Array`.
  */
-export class Versions {
-   /** @type {Uint8Array} Private field storing the raw version data */
-   #_array: Uint8Array;
-
-   /** @type {ProtocolVersion[]} Private field storing the parsed versions */
-   #versions: ProtocolVersion[];
-
+export class Versions extends Uint8Array {
    /**
-    * @returns { Versions } default value
+    * Creates a `Versions` instance from multiple version values.
+    * @param {...(Version | Uint8Array | number)[]} versions - The versions to include.
+    * @returns {Versions} The resulting `Versions` instance.
+    * @throws {Error} If any input is invalid.
     */
-   static default(): Versions
-   /**
-    * Validates and extracts protocol versions from an array.
-    * @param {Uint8Array} array - The array containing protocol versions.
-    * @returns {Uint8Array} - Sanitized array containing only valid protocol versions.
-    * @throws {Error} If the length of the array is less than 2.
-    */
-   static sanitize(array: Uint8Array): Uint8Array;
+   static fromVersions(...versions: (Version | Uint8Array | number)[]): Versions;
 
    /**
-    * Creates a new `Versions` instance from a `Uint8Array`.
-    * @param {Uint8Array} array - The array containing protocol versions.
-    * @returns {Versions} - A new instance of `Versions`.
+    * Returns a `Versions` instance with two default versions.
+    * @returns {Versions} The default instance with two versions.
+    */
+   static defaultTwo(): Versions;
+
+   /**
+    * Returns a `Versions` instance with one default version.
+    * @returns {Versions} The default instance with one version.
+    */
+   static defaultOne(): Versions;
+
+   /**
+    * Validates and extracts multiple versions from an array.
+    * @param {Uint8Array} array - The input array.
+    * @returns {[Uint8Array]} A tuple containing the sanitized versions array.
+    * @throws {Error} If the length is less than 2.
+    */
+   static sanitize(array: Uint8Array): [Uint8Array];
+
+   /**
+    * Creates a `Versions` instance from an array.
+    * @param {Uint8Array} array - The array representing multiple versions.
+    * @returns {Versions} The resulting `Versions` instance.
     */
    static from(array: Uint8Array): Versions;
 
    /**
-    * Constructs a `Versions` instance.
-    * @param {Uint8Array} array - The array containing protocol versions.
+    * Constructs a new `Versions` instance.
+    * @param {Uint8Array | any[]} args - The arguments for initialization.
     */
-   constructor(array: Uint8Array);
+   constructor(...args: any[]);
 
    /**
-    * Gets the parsed protocol versions.
-    * @returns {ProtocolVersion[]} - An array of `ProtocolVersion` instances.
+    * Retrieves an array of `ProtocolVersion` instances representing the contained versions.
+    * @returns {ProtocolVersion[]} An array of protocol versions.
     */
    get versions(): ProtocolVersion[];
-   get length(): number;
 }
 
 /**

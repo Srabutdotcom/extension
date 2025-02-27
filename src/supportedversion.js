@@ -1,8 +1,13 @@
 //@ts-self-types="../type/supportedversion.d.ts"
-import { Version } from "./dep.ts";
+import { safeuint8array, Version } from "./dep.ts";
 import { parseItems } from "./utils.js"
 
 export class ProtocolVersion extends Uint8Array {
+   static fromVersion(version){
+      if(version instanceof Version)return ProtocolVersion.from(version.byte);
+      if(version instanceof Uint8Array)return ProtocolVersion.from(Version.from(version).byte);
+      if(typeof version == "number")return ProtocolVersion.from(Version.fromValue(version).byte);
+   }
    static from(array) { return new ProtocolVersion(array) }
    static sanitize(array) {
       try {
@@ -25,7 +30,17 @@ export class ProtocolVersion extends Uint8Array {
  */
 export class Versions extends Uint8Array {
    #versions
-   static default() { return Versions.from(Uint8Array.of(4, 3, 4, 3, 3)) }
+   static fromVersions(...versions){
+      const _version = safeuint8array(...versions.map(v=>{
+         if(v instanceof Version)return v.byte;
+         if(v instanceof Uint8Array)return Version.from(v).byte;
+         if(typeof v == "number")return Version.fromValue(v).byte;
+         throw Error(`Expected Version or Uint8Array`)
+      }))
+      return Versions.from(safeuint8array(_version.length, _version));
+   }
+   static defaultTwo() { return Versions.from(Uint8Array.of(4, 3, 4, 3, 3)) }
+   static defaultOne() { return Versions.from(Uint8Array.of(2, 3, 4)) }
    static sanitize(array) {
       const lengthOf = array.at(0);
       if (lengthOf < 2) throw Error(`Expected length minimal 2`)

@@ -58,9 +58,9 @@ export class ServerName extends Struct {
 
 export class ServerNameList extends Constrained {
    serverName
-   static fromName(name){
-      const serverName = ServerName.fromName(name);
-      return new ServerNameList(serverName)
+   static fromName(...names){
+      const serverNames = names.map(name=>ServerName.fromName(name));
+      return new ServerNameList(...serverNames)
    }
    static from(array){
       const copy = Uint8Array.from(array);

@@ -95,7 +95,7 @@ export declare class ServerNameList extends Constrained {
    * @param name - The server name.
    * @returns A new instance of `ServerNameList` with the provided server name.
    */
-  static fromName(name: string): ServerNameList;
+  static fromName(...names: [string]): ServerNameList;
 
   /**
    * Parses a `ServerNameList` instance from a `Uint8Array`.

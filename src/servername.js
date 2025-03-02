@@ -1,5 +1,5 @@
 //@ts-self-types="../type/servername.d.ts"
-import { Constrained, Struct, Uint16 } from "./dep.ts";
+import { Constrained, parseItems, Struct, Uint16 } from "./dep.ts";
 //LINK - https://datatracker.ietf.org/doc/html/rfc6066#section-3
 
 export class HostName extends Constrained {
@@ -53,29 +53,29 @@ export class ServerName extends Struct {
       return this.hostname.name;
    }
 
-   get byte() { return Uint8Array.from(this)}
+   get byte() { return Uint8Array.from(this) }
 }
 
 export class ServerNameList extends Constrained {
    serverName
-   static fromName(...names){
-      const serverNames = names.map(name=>ServerName.fromName(name));
+   static fromName(...names) {
+      const serverNames = names.map(name => ServerName.fromName(name));
       return new ServerNameList(...serverNames)
    }
-   static from(array){
+   static from(array) {
       const copy = Uint8Array.from(array);
       const lengthOf = Uint16.from(copy).value;
-      const serverNames = new Set;
-      let offset = 2;
-      while(true){
-         const serverName = ServerName.from(copy.subarray(offset)); offset+=serverName.byte.length;
+      const serverNames = parseItems(copy,2, lengthOf,ServerName)// new Set;
+      /* let offset = 2;
+      while (true) {
+         const serverName = ServerName.from(copy.subarray(offset)); offset += serverName.byte.length;
          serverNames.add(serverName);
-         if(offset>=lengthOf+2)break
-      } 
+         if (offset >= lengthOf + 2) break
+      } */
       return new ServerNameList(...serverNames)
    }
-   constructor(...serverNames){
-      super(1,2**16-1, ...serverNames);
+   constructor(...serverNames) {
+      super(1, 2 ** 16 - 1, ...serverNames);
       this.serverNames = serverNames
    }
 }

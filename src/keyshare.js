@@ -41,7 +41,7 @@ export class KeyShareHelloRetryRequest extends Uint16 {
    }
 
    constructor(group) {
-      super(+group)
+      super(group.byte)
       this.group = group
    }
 }

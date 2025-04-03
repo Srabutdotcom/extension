@@ -1,68 +1,87 @@
-
-import { Constrained } from "../src/dep.ts";
-
+import { Uint16 } from "@tls/struct"
 /**
- * Represents a Distinguished Name (DN) in a certificate.
+ * Represents a Distinguished Name as a `Uint8Array`.
  */
-export class DistinguishedName extends Constrained {
-  /**
-   * The raw byte representation of the Distinguished Name.
-   */
-  opaque: Uint8Array;
+export declare class DistinguishedName extends Uint8Array {
+  #lengthOf: Uint8Array;
+  #DN: Uint8Array;
 
   /**
-   * Parses a `DistinguishedName` instance from its opaque representation.
-   * 
-   * @param opaque - The raw byte data of the Distinguished Name.
-   * @returns A new `DistinguishedName` instance.
+   * Sanitizes the input arguments by ensuring valid length constraints.
+   * @param {any[]} args The arguments to sanitize.
+   * @throws {RangeError} If the length is not within the valid range.
    */
-  static fromOpaque(opaque: Uint8Array): DistinguishedName;
+  static sanitize(args: any[]): void;
 
   /**
-   * Parses a `DistinguishedName` instance from a `Uint8Array`.
-   * 
-   * @param array - The serialized array containing the Distinguished Name data.
-   * @returns A new `DistinguishedName` instance.
+   * Creates a `DistinguishedName` instance from a `Uint8Array`.
+   * @param {Uint8Array} array The byte array containing the distinguished name.
+   * @returns {DistinguishedName}
    */
   static from(array: Uint8Array): DistinguishedName;
 
   /**
-   * Constructs a new `DistinguishedName` instance.
-   * 
-   * @param opaque - The raw byte data of the Distinguished Name.
+   * Constructs a `DistinguishedName` instance.
+   * @param {...any} args Arguments passed to `Uint8Array`.
    */
-  constructor(opaque: Uint8Array);
+  constructor(...args: any[]);
+
+  /**
+   * Gets the length of the distinguished name.
+   * @returns {Uint16}
+   */
+  get lengthOf(): Uint16;
+
+  /**
+   * Gets the distinguished name data.
+   * @returns {Uint8Array}
+   */
+  get DN(): Uint8Array;
 }
 
 /**
- * Represents the Certificate Authorities Extension that holds a list of Distinguished Names.
+ * Represents a Certificate Authorities Extension as a `Uint8Array`.
  */
-export class CertificateAuthoritiesExtension extends Constrained {
-  /**
-   * The list of Distinguished Name instances representing the certificate authorities.
-   */
-  authorities: DistinguishedName[];
+export declare class CertificateAuthoritiesExtension extends Uint8Array {
+  #lengthOf: Uint16;
+  #autorithies: DistinguishedName[];
 
   /**
-   * Creates a `CertificateAuthoritiesExtension` from an array of Distinguished Name instances.
-   * 
-   * @param distinguishedName - The Distinguished Name instances to include in the extension.
-   * @returns A new `CertificateAuthoritiesExtension` instance.
+   * Creates a `CertificateAuthoritiesExtension` instance from multiple distinguished names.
+   * @param {...DistinguishedName} DNs The distinguished names.
+   * @returns {CertificateAuthoritiesExtension}
    */
-  static fromDistinguishedName(...distinguishedName: DistinguishedName[]): CertificateAuthoritiesExtension;
+  static fromDNs(...DNs: DistinguishedName[]): CertificateAuthoritiesExtension;
 
   /**
-   * Parses a `CertificateAuthoritiesExtension` instance from a `Uint8Array`.
-   * 
-   * @param array - The serialized array containing the Certificate Authorities Extension data.
-   * @returns A new `CertificateAuthoritiesExtension` instance.
+   * Sanitizes the input arguments by ensuring valid length constraints.
+   * @param {any[]} args The arguments to sanitize.
+   * @throws {RangeError} If the length is not within the valid range.
+   */
+  static sanitize(args: any[]): void;
+
+  /**
+   * Creates a `CertificateAuthoritiesExtension` instance from a `Uint8Array`.
+   * @param {Uint8Array} array The byte array containing the extension data.
+   * @returns {CertificateAuthoritiesExtension}
    */
   static from(array: Uint8Array): CertificateAuthoritiesExtension;
 
   /**
-   * Constructs a new `CertificateAuthoritiesExtension` instance.
-   * 
-   * @param distinguishedName - The Distinguished Name instances representing the certificate authorities.
+   * Constructs a `CertificateAuthoritiesExtension` instance.
+   * @param {...any} args Arguments passed to `Uint8Array`.
    */
-  constructor(...distinguishedName: DistinguishedName[]);
+  constructor(...args: any[]);
+
+  /**
+   * Gets the length of the certificate authorities extension.
+   * @returns {Uint16}
+   */
+  get lengthOf(): Uint16;
+
+  /**
+   * Gets the list of distinguished names.
+   * @returns {DistinguishedName[]}
+   */
+  get authorities(): DistinguishedName[];
 }

@@ -1,8 +1,9 @@
-// @ts-self-types="../type/certauth.d.ts"
+import { Byte } from "../src/dep.ts";
+import { Uint16, parseItems } from "@tls/struct"
 
-import { Byte, Uint16 } from "./dep.ts";
+const ca1 = Byte.create([0x30, 0x82, 0x01, 0x0a]); // Example DN
+const ca2 = Byte.create([0x30, 0x81, 0xfa]);       // Another example DN
 
-//LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.4
 class DistinguishedName extends Uint8Array {
    #lengthOf
    #DN
@@ -69,3 +70,9 @@ export class CertificateAuthoritiesExtension extends Uint8Array {
       return this.#autorithies
    }
 }
+
+const test_0 = CertificateAuthoritiesExtension.fromDNs(ca1, ca2);
+const test_1 = CertificateAuthoritiesExtension.from(test_0)
+const test_2 = new CertificateAuthoritiesExtension(Uint8Array.of(0, 2, 1, 2, 3))
+
+

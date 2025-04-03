@@ -1,7 +1,12 @@
 import { Constrained, PskKeyExchangeMode } from "../src/dep.ts"; 
 
 /**
- * Represents the PSK key exchange modes as a constrained array.
+ * Represents the PSK Key Exchange Modes in TLS.
+ * This class extends `Constrained` and is used to parse and store key exchange modes.
+ * 
+ * ## PSK Key Exchange Modes:
+ * - **psk_ke**: PSK-only key establishment. In this mode, the server **MUST NOT** supply a `key_share` value.
+ * - **psk_dhe_ke**: PSK with (EC)DHE key establishment. In this mode, both client and server **MUST** supply `key_share` values.
  */
 export declare class PskKeyExchangeModes extends Constrained {
    /**

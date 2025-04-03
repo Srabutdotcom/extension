@@ -7,6 +7,16 @@ export class Empty extends Uint8Array {
 
 /**
  * LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.10
+ * max_early_data_size:  The maximum amount of 0-RTT data that the
+      client is allowed to send when using this ticket, in bytes.  Only
+      Application Data payload (i.e., plaintext but not padding or the
+      inner content type byte) is counted.  A server receiving more than
+      max_early_data_size bytes of 0-RTT data SHOULD terminate the
+      connection with an "unexpected_message" alert.  Note that servers
+      that reject early data due to lack of cryptographic material will
+      be unable to differentiate padding from content, so clients
+      SHOULD NOT depend on being able to send large quantities of
+      padding in early data records.
  */
 export class EarlyDataIndication extends Uint8Array {
    static client_hello() { return new EarlyDataIndication(Empty.of())}
@@ -24,8 +34,11 @@ export class EarlyDataIndication extends Uint8Array {
       }
       return new EarlyDataIndication(data)
    }
-   constructor(data) {
-      super(data);
-      this.data = data;
+   constructor(...args) {
+      super(...args);
+   }
+   get value(){
+      if(this.length)return Uint32.from(this).value;
+      return 0;
    }
 }

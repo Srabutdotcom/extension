@@ -49,13 +49,13 @@ export class Empty extends Uint8Array {
    /**
     * Constructs an `EarlyDataIndication` instance with the provided data.
     * 
-    * @param {Uint8Array} data - The data for the Early Data Indication.
+    * @param {...any} args - The data for the Early Data Indication.
     */
-   constructor(data: Uint8Array);
+   constructor(...args:any[]);
  
    /**
     * @type {Uint8Array} The data contained within the Early Data Indication.
     */
-   data: Uint8Array;
+   get value(): number;
  }
  

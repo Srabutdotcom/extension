@@ -9,7 +9,8 @@ export class Padding extends Uint8Array {
       const lengthOf = Uint16.from(copy).value;
       return new Padding(lengthOf)
    }
-   constructor(len){
-      super(len);
+   constructor(...args){
+      super(...args);
    }
 }
+

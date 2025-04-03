@@ -1,5 +1,5 @@
-//@ts-self-types="../type/cookie.d.ts"
-import { Byte, Uint16 } from "./dep.ts"
+import { Byte, Uint16 } from "../src/dep.ts";
+
 /**
  * LINK - https://www.rfc-editor.org/rfc/rfc8446#section-4.2.2
  * 
@@ -17,17 +17,17 @@ export class Cookie extends Uint8Array {
          args[0] = args[0].slice(0, 1 + lengthOf);
       }
    }
-   static fromCookie(cookie) {
+   static fromCookie(cookie){
       cookie = Byte.create(cookie);
       cookie.prepend(Uint16.fromValue(cookie.length));
       return Cookie.from(cookie)
    }
-   static from(array) { return new Cookie(array) }
+   static from(array){ return new Cookie(array)}
    constructor(...args) {
       Cookie.sanitize(args);
       super(...args)
    }
-   get cookie() {
+   get cookie(){
       return this.subarray(2)
    }
 }

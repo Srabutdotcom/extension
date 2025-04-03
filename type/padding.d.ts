@@ -1,6 +1,7 @@
 /**
  * Represents a padding sequence used in cryptographic protocols.
- * Extends `Uint8Array` for compatibility with binary data operations.
+ * -  Optionally adding, removing, or changing the length of the
+      "padding" extension [RFC7685].
  */
 export class Padding extends Uint8Array {
    /**
@@ -23,8 +24,8 @@ export class Padding extends Uint8Array {
    /**
     * Constructs a `Padding` instance of the specified length.
     * 
-    * @param {number} len - The length of the padding in bytes.
+    * @param {...any} args - The length of the padding in bytes.
     */
-   constructor(len: number);
+   constructor(...args: any[]);
  }
  

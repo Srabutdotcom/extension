@@ -1,34 +1,44 @@
-import { Constrained } from "../src/dep.ts";
 /**
- * Represents the `Cookie` structure, which is defined as `opaque cookie<1..2^16-1>` in TLS specifications.
+ * LINK - https://www.rfc-editor.org/rfc/rfc8446#section-4.2.2
+ * 
+ * ```
+ * struct {
+ *    opaque cookie<1..2^16-1>;
+ * } Cookie;
+ * ```
  */
-export class Cookie extends Constrained {
+export class Cookie extends Uint8Array {
    /**
-    * The `opaque` field representing the raw cookie data.
+    * Validates and sanitizes the input arguments for Cookie construction.
+    * Ensures the length is within the valid range (1 to 2^16-1).
+    * @param {any[]} args - Arguments to be sanitized.
+    * @throws {RangeError} If the length is out of range.
     */
-   opaque: Uint8Array;
+   static sanitize(args: any[]): void;
 
    /**
-    * Creates a `Cookie` instance from the provided `opaque` data.
-    * @param opaque - The opaque cookie data as a `Uint8Array`.
-    * @returns A new `Cookie` instance.
+    * Creates a new Cookie instance from a given cookie data.
+    * @param {Uint8Array | number[]} cookie - The cookie data.
+    * @returns {Cookie} A new Cookie instance.
     */
-   static fromOpaque(opaque: Uint8Array): Cookie;
+   static fromCookie(cookie: Uint8Array | number[]): Cookie;
 
    /**
-    * Creates a `Cookie` instance from a serialized `Uint8Array`.
-    * The first two bytes of the array define the length of the `opaque` field,
-    * followed by the actual `opaque` data.
-    *
-    * @param array - The serialized array containing the cookie data.
-    * @returns A new `Cookie` instance.
+    * Creates a Cookie instance from an array.
+    * @param {Uint8Array} array - The array to convert into a Cookie.
+    * @returns {Cookie} A new Cookie instance.
     */
    static from(array: Uint8Array): Cookie;
 
    /**
-    * Constructs a new `Cookie` instance.
-    *
-    * @param opaque - The opaque cookie data as a `Uint8Array`.
+    * Constructs a new Cookie instance.
+    * @param {...any} args - Arguments for constructing the Cookie.
     */
-   constructor(opaque: Uint8Array);
+   constructor(...args: any[]);
+
+   /**
+    * Retrieves the cookie data excluding the length prefix.
+    * @returns {Uint8Array} The raw cookie data.
+    */
+   get cookie(): Uint8Array;
 }

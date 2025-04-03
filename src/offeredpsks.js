@@ -1,3 +1,4 @@
+//@ts-self-types="../type/offeredpsks.d.ts"
 import { Byte, parseItems, Uint16, Uint32 } from "./dep.ts";
 
 /**

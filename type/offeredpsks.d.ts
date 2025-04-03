@@ -1,10 +1,24 @@
 import { Byte } from "../src/dep.ts";
 
 /**
- * Represents a Pre-Shared Key Binder Entry.
  * ```
  * opaque PskBinderEntry<32..255>;
  * ```
+ * binders:  A series of HMAC values, one for each value in the
+      identities list and in the same order, computed as described
+      below.
+      computed as an HMAC
+   over a transcript hash (see Section 4.4.1) containing a partial
+   ClientHello up to and including the PreSharedKeyExtension.identities
+   field.  That is, it includes all of the ClientHello but not the
+   binders list itself.  The length fields for the message (including
+   the overall length, the length of the extensions block, and the
+   length of the "pre_shared_key" extension) are all set as if binders
+   of the correct lengths were present.
+   The PskBinderEntry is computed in the same way as the Finished
+   message (Section 4.4.4) but with the BaseKey being the binder_key
+   derived via the key schedule from the corresponding PSK which is
+   being offered (see Section 7.1).
  */
 export class PskBinderEntry extends Byte {
    
@@ -30,7 +44,21 @@ export class PskBinderEntry extends Byte {
 }
 
 /**
- * Represents a PSK Identity structure.
+ * ```
+ * struct {
+          opaque identity<1..2^16-1>;
+          uint32 obfuscated_ticket_age;
+      } PskIdentity;
+   ```
+   identity:  A label for a key.  For instance, a ticket (as defined in
+      Appendix B.3.4) or a label for a pre-shared key established
+      externally. Ticket in newSessionTicket send after finished handshake
+      by server.
+   obfuscated_ticket_age:  An obfuscated version of the age of the key.
+      Section 4.2.11.1 describes how to form this value for identities
+      established via the NewSessionTicket message.  For identities
+      established externally, an obfuscated_ticket_age of 0 SHOULD be
+      used, and servers MUST ignore the value.  
  */
 export class PskIdentity extends Uint8Array {
    /**
@@ -62,7 +90,13 @@ export class PskIdentity extends Uint8Array {
 }
 
 /**
- * Represents a list of PSK identities.
+ * ```
+ * PskIdentity identities<7..2^16-1>;
+ * ```
+ * identities:  A list of the identities that the client is willing to
+      negotiate with the server.  If sent alongside the "early_data"
+      extension (see Section 4.2.10), the first identity is the one used
+      for 0-RTT data.
  */
 export class Identities extends Uint8Array {
    /**
@@ -93,7 +127,12 @@ export class Identities extends Uint8Array {
 }
 
 /**
- * Represents a list of PSK binder entries.
+ * ```
+ * PskBinderEntry binders<33..2^16-1>;
+ * ```
+ * binders:  A series of HMAC values, one for each value in the
+      identities list and in the same order, computed as described
+      below.
  */
 export class Binders extends Uint8Array {
    /**
@@ -124,7 +163,20 @@ export class Binders extends Uint8Array {
 }
 
 /**
- * Represents the `OfferedPsks` structure, which contains PSK identities and binders.
+ * ```
+ * struct {
+          PskIdentity identities<7..2^16-1>;
+          PskBinderEntry binders<33..2^16-1>;
+      } OfferedPsks;
+   ```
+   identities:  A list of the identities that the client is willing to
+      negotiate with the server.  If sent alongside the "early_data"
+      extension (see Section 4.2.10), the first identity is the one used
+      for 0-RTT data.
+
+   binders:  A series of HMAC values, one for each value in the
+      identities list and in the same order, computed as described
+      below.
  */
 export class OfferedPsks extends Uint8Array {
    /**

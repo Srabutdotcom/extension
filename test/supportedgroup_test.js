@@ -6,3 +6,6 @@ const test = NamedGroupList.fromGroups(
    NamedGroup.X25519,
    NamedGroup.SECP256R1
 )
+
+const back = NamedGroupList.from(test);
+const _null= null;

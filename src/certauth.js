@@ -1,28 +1,30 @@
 // @ts-self-types="../type/certauth.d.ts"
 
-import { Byte, Uint16 } from "./dep.ts";
+import { getUint16, sanitize, unity, vector } from "./dep.ts";
 
-//LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.4
+const MAX16_1 = 2 ** 16 - 1;
+
+/**
+ * ```
+ * opaque DistinguishedName<1..2^16-1>;
+ * ```
+ * LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.4
+ */
 class DistinguishedName extends Uint8Array {
    #lengthOf
    #DN
-   static sanitize(args) {
-      if (args[0] instanceof Uint8Array) {
-         if (args[0].length < 1 || args[0].length > 2 ** 16 - 1) throw new RangeError(`Length must be between 1 and 65535 bytes.`);
-         const lengthOf = Uint16.from(args[0]).value;
-         args[0] = args[0].slice(0, 2 + lengthOf);
-      }
-   }
+
    static from(array) {
       return new DistinguishedName(array)
    }
    constructor(...args) {
-      DistinguishedName.sanitize(args);
+      //DistinguishedName.sanitize(args);
+      sanitize(args, { min: 1, max: MAX16_1 })
       super(...args)
    }
    get lengthOf() {
       if (this.#lengthOf) return this.#lengthOf
-      this.#lengthOf ||= Uint16.from(this).value;
+      this.#lengthOf ||= getUint16(this);
       return this.#lengthOf;
    }
    get DN() {
@@ -32,35 +34,37 @@ class DistinguishedName extends Uint8Array {
    }
 }
 
+/**
+ * ```
+ * struct {
+          DistinguishedName authorities<3..2^16-1>;
+      } CertificateAuthoritiesExtension;
+   ```
+ */
 export class CertificateAuthoritiesExtension extends Uint8Array {
    #lengthOf
    #autorithies // list of DistinguishedName 
    static fromDNs(...DNs) {
-      const authorities = DNs.reduce((previous, current) => {
-         current.prepend(Uint16.fromValue(current.length))
-         previous.append(current);
-         return previous;
-      }, Byte.create())
-      authorities.prepend(Uint16.fromValue(authorities.length));
-      return new CertificateAuthoritiesExtension(authorities)
+      const authorities = unity(...DNs)
+      return new CertificateAuthoritiesExtension(
+         vector(
+            authorities,
+            { min: 3, max: MAX16_1 }
+         )
+      )
    }
-   static sanitize(args) {
-      if (args[0] instanceof Uint8Array) {
-         if (args[0].length < 3 || args[0].length > 2 ** 16 - 1) throw new RangeError(`Length must be between 3 and 65535 bytes.`);
-         const lengthOf = Uint16.from(args[0]).value;
-         args[0] = args[0].slice(0, 2 + lengthOf);
-      }
-   }
+
    static from(array) {
       return new CertificateAuthoritiesExtension(array)
    }
    constructor(...args) {
-      CertificateAuthoritiesExtension.sanitize(args)
+      //CertificateAuthoritiesExtension.sanitize(args)
+      sanitize(args, { min: 3, max: MAX16_1 })
       super(...args)
    }
    get lengthOf() {
       if (this.#lengthOf) return this.#lengthOf
-      this.#lengthOf ||= Uint16.from(this).value;
+      this.#lengthOf ||= getUint16(this);
       return this.#lengthOf;
    }
    get authorities() {

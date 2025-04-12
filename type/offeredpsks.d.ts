@@ -1,4 +1,39 @@
-import { Byte } from "../src/dep.ts";
+import { Uint32 } from "../src/dep.ts"
+
+/**
+ * Represents a 32-bit unsigned integer value, extended from Uint32.
+ */
+export class TicketAge extends Uint32 {}
+
+
+/**
+ * Represents an opaque identity<1..2^16-1>;
+ */
+export class Identity extends Uint8Array {
+
+   /**
+    * Create a new Identity instance from raw value(s)
+    * @param value - A Uint8Array or array of Uint8Array to encode
+    */
+   static fromValue(value: Uint8Array | Uint8Array[]): Identity;
+
+   /**
+    * Create a new Identity instance from a pre-encoded Uint8Array
+    * @param array - Pre-encoded data
+    */
+   static from(array: Uint8Array): Identity;
+
+   /**
+    * Constructs a new Identity
+    * @param args - Arguments passed to the base Uint8Array constructor
+    */
+   constructor(...args: ConstructorParameters<typeof Uint8Array>);
+
+   /**
+    * The value of the identity, excluding the 2-byte length prefix
+    */
+   get value(): Uint8Array;
+}
 
 /**
  * ```
@@ -20,7 +55,7 @@ import { Byte } from "../src/dep.ts";
    derived via the key schedule from the corresponding PSK which is
    being offered (see Section 7.1).
  */
-export class PskBinderEntry extends Byte {
+export class PskBinderEntry extends Uint8Array {
    
    /**
     * Creates a `PskBinderEntry` from a given binder.

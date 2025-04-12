@@ -9,6 +9,8 @@ const supportedVersionsBack = Versions.from(supportedVersions);
 const versions = Versions.fromVersions(Version.TLS13);
 const version = ProtocolVersion.fromVersion(Version.TLS12);
 
+const _null = null;
+
 /* Deno.test("Selected_version", () => {
    const test = Selected_version.default();
    const back = Selected_version.from(test);

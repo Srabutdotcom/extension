@@ -1,67 +1,56 @@
-import { SignatureScheme } from "@tls/enum"; // Update import path as needed
-import { Constrained, Uint16 } from "../src/dep.ts"; // Update import path as needed
-import { Struct } from "../src/dep.ts";
+import { SignatureScheme } from "../src/dep.ts";
 
 /**
- * Represents the supported signature algorithms in a TLS handshake.
+ * Represents a list of supported signature schemes.
+ * 
+ * Reference: RFC 8446 - TLS 1.3  
+ * 
+ * ```
+ * struct {
+ *     SignatureScheme supported_signature_algorithms<2..2^16-2>;
+ * } SignatureSchemeList;
+ * ```
  */
-export declare class Supported_signature_algorithms extends Constrained {
-  /**
-   * Creates a default `Supported_signature_algorithms` instance with common signature schemes.
-   * @returns {Supported_signature_algorithms} A default instance.
-   */
-  static default(): Supported_signature_algorithms;
+export class SignatureSchemeList extends Uint8Array {
+  /** @internal */
+  #supported_signature_algorithms: SignatureScheme[];
 
   /**
-   * Creates a `Supported_signature_algorithms` instance from the given signature schemes.
-   * @param {...Uint16[]} signatureSchemes - The signature schemes to include.
-   * @returns {Supported_signature_algorithms} A new instance.
+   * Validates and sanitizes the input arguments.
+   * Ensures the length is within the allowed range (2 to 2^16-2).
+   * 
+   * @param {any[]} args - The input arguments to sanitize.
+   * @throws {RangeError} If the length is out of bounds.
    */
-  static fromSignatureSchemes(
-    ...signatureSchemes: Uint16[]
-  ): Supported_signature_algorithms;
+  static sanitize(args: any[]): void;
 
   /**
-   * Creates a `Supported_signature_algorithms` instance from a binary array.
-   * @param {Uint8Array | number[]} array - The binary data representing the signature schemes.
-   * @returns {Supported_signature_algorithms} A new instance.
+   * Creates a `SignatureSchemeList` from multiple `SignatureScheme` instances.
+   * 
+   * @param {...(SignatureScheme | Uint8Array)} supported_signature_algorithms - The signature schemes to include.
+   * @returns {SignatureSchemeList} A new instance of `SignatureSchemeList`.
    */
-  static from(array: Uint8Array | number[]): Supported_signature_algorithms;
+  static fromSchemes(...supported_signature_algorithms: (SignatureScheme | Uint8Array)[]): SignatureSchemeList;
 
   /**
-   * Constructs a `Supported_signature_algorithms` instance.
-   * @param {...Uint16[]} signatureSchemes - The signature schemes to include.
-   */
-  constructor(...signatureSchemes: Uint16[]);
-
-  /**
-   * List of parsed signature schemes.
-   * @type {SignatureScheme[]}
-   */
-  signatureSchemes: SignatureScheme[];
-}
-
-/**
- * Represents a list of signature schemes in the TLS handshake.
- */
-export declare class SignatureSchemeList extends Constrained {
-  /**
-   * Parses a `SignatureSchemeList` from a `Uint8Array`.
-   * @param array - The input array containing signature schemes data.
-   * @returns A new instance of `SignatureSchemeList`.
-   * @throws {Error} If the input array is invalid or incomplete.
+   * Creates a `SignatureSchemeList` instance from a given array.
+   * 
+   * @param {Uint8Array} array - The input array.
+   * @returns {SignatureSchemeList} A new instance of `SignatureSchemeList`.
    */
   static from(array: Uint8Array): SignatureSchemeList;
 
   /**
-   * Constructs a `SignatureSchemeList`.
-   * @param supported_signature_algorithms - A list of supported signature schemes.
-   * @throws {Error} If the constraints are not satisfied.
+   * Constructs a `SignatureSchemeList` instance.
+   * 
+   * @param {...any} args - The constructor arguments.
    */
-  constructor(...supported_signature_algorithms: SignatureScheme[]);
+  constructor(...args: any[]);
 
   /**
-   * The list of supported signature schemes.
+   * Gets the list of supported signature algorithms.
+   * 
+   * @returns {SignatureScheme[]} The parsed signature schemes.
    */
-  readonly supported_signature_algorithms: SignatureScheme[];
+  get supported_signature_algorithms(): SignatureScheme[];
 }

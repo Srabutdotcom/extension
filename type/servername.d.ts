@@ -1,119 +1,175 @@
-import { Constrained, Struct } from "../src/dep.ts";
+import { Byte } from "@aicone/byte"
 
 /**
- * Represents a `HostName` defined as an opaque structure with constraints.
- * Used to handle hostnames in the TLS ServerName extension.
+ * ```
+ * opaque HostName<1..2^16-1>;
+ * ```
  */
-export class HostName extends Constrained {
+export class HostName extends Byte {
   /**
-   * The `opaque` field representing the raw hostname data.
+   * @private
    */
-  opaque: Uint8Array;
+  #opaque: Byte;
 
   /**
-   * Creates a `HostName` instance from a string hostname.
+   * Sanitizes the input array for HostName.
    *
-   * @param hostName - The hostname as a string.
-   * @returns A new `HostName` instance.
+   * @param {Uint8Array | number[] | Byte} array - The input array.
+   * @returns {Uint8Array} - The sanitized array.
+   * @throws {TypeError} - If the input is not a Uint8Array, Array, or Byte.
+   * @throws {RangeError} - If the length of HostName is not between 1 and 65535.
+   */
+  static sanitize(array: Uint8Array | number[] | Byte): Uint8Array;
+
+  /**
+   * Creates a HostName instance from a hostname string.
+   *
+   * @param {string} hostName - The hostname string.
+   * @returns {HostName} - A new HostName instance.
    */
   static fromName(hostName: string): HostName;
 
   /**
-   * Creates a `HostName` instance from a serialized `Uint8Array`.
-   * The first two bytes of the array define the length of the hostname,
-   * followed by the encoded hostname.
+   * Creates a HostName instance from an array.
    *
-   * @param array - The serialized array containing the hostname data.
-   * @returns A new `HostName` instance.
+   * @param {Uint8Array | number[] | Byte} array - The input array.
+   * @returns {HostName} - A new HostName instance.
    */
-  static from(array: Uint8Array): HostName;
+  static from(array: Uint8Array | number[] | Byte): HostName;
 
   /**
-   * Constructs a new `HostName` instance.
+   * Creates a HostName instance.
    *
-   * @param opaque - The raw hostname data as a `Uint8Array`.
+   * @param {Uint8Array | number[]} array - The input array.
    */
-  constructor(opaque: Uint8Array);
+  constructor(array: Uint8Array | number[]);
 
   /**
-   * Decodes the hostname into a string.
+   * Gets the opaque part of the HostName.
    *
-   * @returns The decoded hostname.
+   * @returns {Uint8Array} - The opaque part.
+   */
+  get opaque(): Uint8Array;
+
+  /**
+   * Gets the hostname string.
+   *
+   * @returns {string} - The hostname string.
    */
   get name(): string;
 }
 
 /**
- * Represents a `ServerName` structure that includes a `HostName` and a name type.
- * This is typically used in TLS ServerName extensions.
+ * ```
+ * struct {
+ * NameType name_type;
+ * select (name_type) {
+ * case host_name: HostName;
+ * } name;
+ * } ServerName;
+ *
+ * enum {
+ * host_name(0), (255)
+ * } NameType;
+ * ```
  */
-export class ServerName extends Struct {
+export class ServerName extends Byte {
   /**
-   * The `HostName` associated with this `ServerName`.
+   * @private
    */
-  hostname: HostName;
+  #hostName: HostName;
 
   /**
-   * Creates a `ServerName` instance from a string hostname.
+   * Sanitizes the input array for ServerName.
    *
-   * @param name - The hostname as a string.
-   * @returns A new `ServerName` instance.
+   * @param {Uint8Array | number[] | Byte} array - The input array.
+   * @returns {Uint8Array} - The sanitized array.
+   * @throws {TypeError} - If the input is not a Uint8Array, Array, or Byte.
+   * @throws {TypeError} - If the name_type is not host_name(0).
    */
-  static fromName(name: string): ServerName;
+  static sanitize(array: Uint8Array | number[] | Byte): Uint8Array;
 
   /**
-   * Creates a `ServerName` instance from a serialized `Uint8Array`.
-   * The first byte of the array specifies the name type, which must be `0` (host_name).
-   * The remaining bytes contain the `HostName`.
+   * Creates a ServerName instance from a hostname string.
    *
-   * @param array - The serialized array containing the server name data.
-   * @returns A new `ServerName` instance.
-   * @throws {TypeError} If the name type is not `0`.
+   * @param {string} hostName - The hostname string.
+   * @returns {ServerName} - A new ServerName instance.
    */
-  static from(array: Uint8Array): ServerName;
+  static fromName(hostName: string): ServerName;
 
   /**
-   * Constructs a new `ServerName` instance.
+   * Creates a ServerName instance from an array.
    *
-   * @param hostname - The `HostName` associated with this `ServerName`.
+   * @param {Uint8Array | number[] | Byte} array - The input array.
+   * @returns {ServerName} - A new ServerName instance.
    */
-  constructor(hostname: HostName);
+  static from(array: Uint8Array | number[] | Byte): ServerName;
 
   /**
-   * Returns the hostname as a string.
+   * Creates a ServerName instance.
+   *
+   * @param {Uint8Array | number[]} array - The input array.
+   */
+  constructor(array: Uint8Array | number[]);
+
+  /**
+   * Gets the hostname string.
+   *
+   * @returns {string} - The hostname string.
    */
   get name(): string;
 }
 
 /**
- * Represents a list of server names with constraints on the size.
- * Extends the `Constrained` class to validate the size of the list.
+ * ```
+ * struct {
+ * ServerName server_name_list<1..2^16-1>
+ * } ServerNameList;
+ * ```
  */
-export declare class ServerNameList extends Constrained {
+export class ServerNameList extends Byte {
   /**
-   * Creates a `ServerNameList` instance from a single server name.
-   * @param name - The server name.
-   * @returns A new instance of `ServerNameList` with the provided server name.
+   * @private
    */
-  static fromName(...names: [string]): ServerNameList;
+  #serverNames: ServerName[];
 
   /**
-   * Parses a `ServerNameList` instance from a `Uint8Array`.
-   * @param array - The input array containing server name data.
-   * @returns A new instance of `ServerNameList`.
-   * @throws {Error} If the input array is invalid or incomplete.
+   * Sanitizes the input array for ServerNameList.
+   *
+   * @param {Uint8Array | number[] | Byte} array - The input array.
+   * @returns {Uint8Array} - The sanitized array.
+   * @throws {TypeError} - If the input is not a Uint8Array, Array, or Byte.
+   * @throws {RangeError} - If the length of ServerNameList is not between 1 and 2**16-1.
    */
-  static from(array: Uint8Array): ServerNameList;
+  static sanitize(array: Uint8Array | number[] | Byte): Uint8Array;
 
   /**
-   * Constructs a `ServerNameList` instance.
-   * @param serverNames - A list of server names.
-   * @throws {Error} If the constraints are not satisfied.
+   * Creates a ServerNameList instance from an array of hostname strings.
+   *
+   * @param {...string} names - The hostname strings.
+   * @returns {ServerNameList} - A new ServerNameList instance.
    */
-  constructor(...serverNames: ServerName[]);
+  static fromNames(...names: string[]): ServerNameList;
 
   /**
-   * The list of server names in the `ServerNameList`.
+   * Creates a ServerNameList instance from an array.
+   *
+   * @param {Uint8Array | number[] | Byte} array - The input array.
+   * @returns {ServerNameList} - A new ServerNameList instance.
    */
-  readonly serverNames: ServerName[];
+  static from(array: Uint8Array | number[] | Byte): ServerNameList;
+
+  /**
+   * Creates a ServerNameList instance.
+   *
+   * @param {Uint8Array | number[]} array - The input array.
+   */
+  constructor(array: Uint8Array | number[]);
+
+  /**
+   * Gets the array of ServerName instances.
+   *
+   * @returns {ServerName[]} - The array of ServerName instances.
+   */
+  get serverNames(): ServerName[];
 }

@@ -1,11 +1,29 @@
-import { Constrained, Uint16, NamedGroup, KeyShareEntry } from "../src/dep.ts";
+import { NamedGroup } from "../src/dep.ts";
 
+/**
+ * Represents a KeyShareEntry structure.
+ */
+export class KeyShareEntry extends Uint8Array {
+  /** Parses a KeyShareEntry from a NamedGroup */
+  static fromGroup(group: NamedGroup): KeyShareEntry;
 
+  /** Creates a KeyShareEntry from a given Uint8Array */
+  static from(array: Uint8Array): KeyShareEntry;
+
+  /** Constructs a new KeyShareEntry */
+  constructor(...args: ConstructorParameters<typeof Uint8Array>);
+
+  /** The NamedGroup associated with this KeyShareEntry */
+  get group(): NamedGroup;
+
+  /** The key exchange data portion of the entry */
+  get key_exchange(): Uint8Array;
+}
 
 /**
  * Represents the KeyShare extension in the ClientHello message.
  */
-export class KeyShareClientHello extends Constrained {
+export class KeyShareClientHello extends Uint8Array {
   /**
    * Creates a KeyShareClientHello from multiple KeyShareEntry instances.
    * @param {KeyShareEntry[]} keyShareEntries - The key share entries.
@@ -33,7 +51,7 @@ export class KeyShareClientHello extends Constrained {
 /**
  * Represents the KeyShare extension in the HelloRetryRequest message.
  */
-export class KeyShareHelloRetryRequest extends Uint16 {
+export class KeyShareHelloRetryRequest extends Uint8Array {
   /**
    * Creates a KeyShareHelloRetryRequest from a NamedGroup.
    * @param {NamedGroup} group - The NamedGroup.

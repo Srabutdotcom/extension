@@ -1,90 +1,118 @@
 // @ts-self-types="../type/oidfilter.d.ts"
 // LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.5
 
-import { Uint16, Uint8, Struct, Constrained } from "./dep.ts";
+import { sanitize, vector16, vector8 } from "./dep.ts";
+import { parseItems } from "./utils.js"
 
-export class OIDFilter extends Struct {
+/**
+ * ```
+ * struct {
+          opaque certificate_extension_oid<1..2^8-1>;
+          opaque certificate_extension_values<0..2^16-1>;
+      } OIDFilter;
+   ```
+ */
+export class OIDFilter extends Uint8Array {
    certificate_extension_oid;
    certificate_extension_values;
 
-   static from(array) {
-      // Convert OIDFilter instance to Uint8Array
-      const copy = Uint8Array.from(array)
-
-      const oid = CertificateExtensionOid.from(copy);
-      const values = CertificateExtensionValues.from(copy.subarray(oid.length));
-      return new OIDFilter(oid, values);
-   }
-
-   constructor(certificate_extension_oid, certificate_extension_values) {
-      super(certificate_extension_oid, certificate_extension_values);
-      this.certificate_extension_oid = certificate_extension_oid;
-      this.certificate_extension_values = certificate_extension_values;
-   }
-}
-
-export class OIDFilterExtension extends Constrained {
-   static from(array) {
-      const copy = Uint8Array.from(array)
-      const lengthOf = Uint16.from(copy.subarray(0, 2)).value;
-      const oidfilters = []
-      for(let offset = 2; offset< lengthOf+2;){
-         const oidFilter = OIDFilter.from(copy.subarray(offset));
-         oidfilters.push(oidFilter);
-         offset += oidFilter.length;
+   static sanitize(args) {
+      const a0 = args[0];
+      if (a0 instanceof Uint8Array) {
+         const oid = CertificateExtensionOID.from(a0);
+         const values = CertificateExtensionValues.from(a0.subarray(oid.length));
+         args[0] = a0.subarray(oid.length + values.length);
+         return
       }
-      return new OIDFilterExtension(...oidfilters)
-   }
-   constructor(...oidfilters) {
-      super(0, 65535, ...oidfilters)
-      this.oidFilters = oidfilters
-   }
-}
-
-// CertificateExtensionOid class represents opaque certificate_extension_oid<1..2^8-1>
-export class CertificateExtensionOid extends Constrained {
-   opaque
-
-   static fromOpaque(opaque) {
-      return new CertificateExtensionOid(opaque);
    }
 
    static from(array) {
-      // Convert CertificateExtensionOid instance to Uint8Array
-      const copy = Uint8Array.from(array)
-      const lengthOf = Uint8.from(copy.subarray(0, 1)).value;
-      const opaque = copy.subarray(1, 1 + lengthOf);
-      return new CertificateExtensionOid(opaque);
+      return new OIDFilter(array);
    }
 
-   constructor(opaque) {
-      super(1, 255, opaque);
-      this.opaque = opaque
+   constructor(...args) {
+      OIDFilter.sanitize(args)
+      super(...args)
+   }
+}
+/**
+ * ```
+ * struct {
+          OIDFilter filters<0..2^16-1>;
+      } OIDFilterExtension;
+   ```
+ */
+export class OIDFilterExtension extends Uint8Array {
+   #oidFilters
+   static fromOidFilters(...oidFilters) {
+      oidFilters = unity(...oidFilters);
+      return new OIDFilterExtension(vector16(oidFilters))
+   }
+   static from(array) {
+      return new OIDFilterExtension(array)
+   }
+   constructor(...args) {
+      sanitize(args, { max: 65535 })
+      super(...args)
+   }
+   get oidFilters(){
+      if(this.#oidFilters)return this.#oidFilters;
+      this.#oidFilters||= parseItems(this, 2, this.length-2, OIDFilter);
+      return this.#oidFilters
    }
 }
 
-// CertificateExtensionValues class represents opaque certificate_extension_values<0..2^16-1>
-export class CertificateExtensionValues extends Constrained {
-   opaque
+/**
+ * Represents an opaque certificate_extension_oid<1..2^8-1>;
+ */
+export class CertificateExtensionOID extends Uint8Array {
 
-   static fromOpaque(opaque) {
-      return new CertificateExtensionValues(opaque);
+
+   static fromValue(value) {
+      return new CertificateExtensionOID(vector8(value));
    }
 
    static from(array) {
-      // Convert CertificateExtensionValues instance to Uint8Array
-      const copy =  Uint8Array.from(array) 
-
-      const lengthOf = Uint16.from(copy.subarray(0, 2)).value;
-      const opaque = copy.subarray(2, 2 + lengthOf);
-      return new CertificateExtensionValues(opaque);
+      return new CertificateExtensionOID(array);
    }
-   constructor(opaque) {
-      super(0, 65535, opaque);
-      this.opaque = opaque
+
+   constructor(...args) {
+      sanitize(args, { min: 1, max: 255 }); // 1 byte length + at least 1 content byte
+      super(...args);
+   }
+
+   /**
+    * Get the actual OID value without the length prefix
+    * @returns {Uint8Array}
+    */
+   get value() {
+      return this.subarray(1);
+   }
+}
+
+/**
+ * Represents an opaque certificate_extension_values<0..2^16-1>;
+ */
+export class CertificateExtensionValues extends Uint8Array {
+
+   static fromValue(value) {
+      return new CertificateExtensionValues(vector16(value));
+   }
+
+   static from(array) {
+      return new CertificateExtensionValues(array);
+   }
+
+   constructor(...args) {
+      sanitize(args, { max: 65535 }); 
+      super(...args);
+   }
+
+   get value() {
+      return this.subarray(2);
    }
 }
 
 export class PostHandshakeAuth extends Uint8Array {
-   constructor(){super(0)}
+   constructor() { super(0) }
 }

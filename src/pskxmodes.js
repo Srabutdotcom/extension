@@ -1,6 +1,8 @@
 //@ts-self-types="../type/pskxmodes.d.ts"
-import { /* Constrained,  */PskKeyExchangeMode } from "./dep.ts";
+import { PskKeyExchangeMode, sanitize, unity, vector8 } from "./dep.ts";
 import { parseItems } from "./utils.js";
+
+// TODO
 
 /* export class PskKeyExchangeModes_0 extends Constrained {
     static from(array) {
@@ -34,23 +36,9 @@ import { parseItems } from "./utils.js";
 export class PskKeyExchangeModes extends Uint8Array {
     #ke_modes;
 
-    static sanitize(args) {
-        if (args[0] instanceof Uint8Array) {
-            const lengthOf = args[0][0];
-            if (lengthOf < 1 || lengthOf > 255) {
-                throw new RangeError("Length of PskKeyExchangeModes should be between 1 and 255");
-            }
-            args[0] = args[0].slice(0, 1 + lengthOf);
-        }
-    }
-
     static fromModes(...ke_modes) {
-        const array = ke_modes.reduce((prev, curr) => {
-            prev.push(curr[0]??+curr);
-            return prev;
-        }, []);
-        array.unshift(array.length);
-        return new PskKeyExchangeModes(new Uint8Array(array));
+        ke_modes = unity(...ke_modes)
+        return new PskKeyExchangeModes(vector8(ke_modes));
     }
 
     static from(array) {
@@ -58,7 +46,7 @@ export class PskKeyExchangeModes extends Uint8Array {
     }
 
     constructor(...args) {
-        PskKeyExchangeModes.sanitize(args);
+        sanitize(args, { min: 1, max: 255 });
         super(...args);
     }
 

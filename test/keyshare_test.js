@@ -14,5 +14,23 @@ const keyShareClientHello = Uint8Array.of(0,36,0,29,0,32,153,56,29,229,96,228,18
 
 const back = KeyShareClientHello.from(keyShareClientHello);
 
-const keyShareHRR = KeyShareHelloRetryRequest.from(NamedGroup.X25519.byte);
+// start --- test KeyShareServerHello 
+const key = NamedGroup.X25519
+
+const key_0 = KeyShareServerHello.fromGroup(key);
+const key_back = KeyShareServerHello.from(key_0);
+// end --- test KeyShareServerHello 
+
+// start --- test KeyShareHelloRetryRequest
+const keyShare_0 = KeyShareHelloRetryRequest.from(NamedGroup.X25519.byte);
+const keyShare_group = keyShare_0.group;
+const keyShare_1 = KeyShareHelloRetryRequest.fromGroup(keyShare_group)
+// end --- test KeyShareHelloRetryRequest
+
+// start --- test keyShareClientHello
+const keyShareClient_0 = KeyShareClientHello.fromGroups(NamedGroup.X25519, NamedGroup.SECP256R1);
+const keyShareClient_group = keyShareClient_0.client_shares;//client_share
+const keyShareClient_1 = KeyShareClientHello.from(keyShareClient_0)
+// end --- test keyShareClientHello
+
 const _null = null;

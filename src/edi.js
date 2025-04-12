@@ -1,8 +1,8 @@
 // @ts-self-types="../type/edi.d.ts"
-import { Uint32 } from "./dep.ts";
+import { uint32, getUint32 } from "./dep.ts";
 
 export class Empty extends Uint8Array {
-   constructor(){super(0)}
+   constructor() { super(0) }
 }
 
 /**
@@ -19,26 +19,27 @@ export class Empty extends Uint8Array {
       padding in early data records.
  */
 export class EarlyDataIndication extends Uint8Array {
-   static client_hello() { return new EarlyDataIndication(Empty.of())}
-   static encrypted_extensions(){ return new EarlyDataIndication(Empty.of())}
-   static new_session_ticket(max_early_data_size){ 
-      const data = Uint32.fromValue(max_early_data_size) 
-      return new EarlyDataIndication(data) 
+   static client_hello() { return new EarlyDataIndication(Empty.of()) }
+   static encrypted_extensions() { return new EarlyDataIndication(Empty.of()) }
+   static new_session_ticket(max_early_data_size) {
+      const data = uint32(max_early_data_size)
+      return new EarlyDataIndication(data)
    }
    static from(array) {
-      let data 
-      if(!array.length){
+      let data
+      if (!array.length) {
          data = Empty.of();
       } else {
-         data = Uint32.from(array);
+         data = array.subarray(0, 4);
       }
       return new EarlyDataIndication(data)
    }
    constructor(...args) {
       super(...args);
    }
-   get value(){
-      if(this.length)return Uint32.from(this).value;
+   get value() {
+      if (this.length) return getUint32(this);
       return 0;
    }
 }
+

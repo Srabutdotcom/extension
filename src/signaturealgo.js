@@ -1,9 +1,9 @@
 //@ts-self-types = "../type/signaturealgo.d.ts"
-import { Constrained, Uint16 } from "./dep.ts";
+import { sanitize, unity, vector16 } from "./dep.ts";
 import { SignatureScheme } from "./dep.ts";
 import { parseItems } from "./utils.js";
 
-export class Supported_signature_algorithms extends Constrained {
+/* export class Supported_signature_algorithms extends Constrained {
    static default(){
       return new Supported_signature_algorithms(
          SignatureScheme.RSA_PSS_RSAE_SHA512.Uint16,
@@ -33,9 +33,9 @@ export class Supported_signature_algorithms extends Constrained {
    constructor(...signatureSchemes){
       super(2, 2**16-2, ...signatureSchemes)
    }
-}
+} */
 
-export class SignatureSchemeList extends Constrained {
+/* export class SignatureSchemeList_0 extends Constrained {
    static from(array){
       const copy = Uint8Array.from(array);
       const lengthOf = Uint16.from(copy).value;
@@ -46,5 +46,37 @@ export class SignatureSchemeList extends Constrained {
       super(2, 2 ** 16 - 2, ...supported_signature_algorithms.map(e => e.Uint16))
       this.supported_signature_algorithms = supported_signature_algorithms;
    }
+} */
+
+/**
+ * ```  
+ * struct {  
+ *     SignatureScheme supported_signature_algorithms<2..2^16-2>;  
+ * } SignatureSchemeList;  
+ * ```  
+ */
+export class SignatureSchemeList extends Uint8Array {
+   #supported_signature_algorithms;
+
+   static fromSchemes(...supported_signature_algorithms) {
+      const algos = unity(...supported_signature_algorithms.map(e=>e.byte))
+      return new SignatureSchemeList(vector16(algos));
+   }
+
+   static from(array) {
+      return new SignatureSchemeList(array);
+   }
+
+   constructor(...args) {
+      sanitize(args, { min: 2, max: 2 ** 16 - 2 });
+      super(...args);
+   }
+
+   get supported_signature_algorithms() {
+      this.#supported_signature_algorithms ||= parseItems(this, 2, this.length - 2, SignatureScheme,
+         { store: new Map(), storeset: (store, item) => store.set(item, item) });
+      return this.#supported_signature_algorithms;
+   }
 }
+
 

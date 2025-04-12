@@ -1,4 +1,3 @@
-import { Uint16 } from "@tls/struct"
 /**
  * Represents a Distinguished Name as a `Uint8Array`.
  */
@@ -28,9 +27,9 @@ export declare class DistinguishedName extends Uint8Array {
 
   /**
    * Gets the length of the distinguished name.
-   * @returns {Uint16}
+   * @returns {number}
    */
-  get lengthOf(): Uint16;
+  get lengthOf(): number;
 
   /**
    * Gets the distinguished name data.
@@ -43,7 +42,7 @@ export declare class DistinguishedName extends Uint8Array {
  * Represents a Certificate Authorities Extension as a `Uint8Array`.
  */
 export declare class CertificateAuthoritiesExtension extends Uint8Array {
-  #lengthOf: Uint16;
+  #lengthOf: number;
   #autorithies: DistinguishedName[];
 
   /**
@@ -75,9 +74,9 @@ export declare class CertificateAuthoritiesExtension extends Uint8Array {
 
   /**
    * Gets the length of the certificate authorities extension.
-   * @returns {Uint16}
+   * @returns {number}
    */
-  get lengthOf(): Uint16;
+  get lengthOf(): number;
 
   /**
    * Gets the list of distinguished names.

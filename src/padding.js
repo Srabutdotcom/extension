@@ -1,15 +1,27 @@
 //@ts-self-types="../type/padding.d.ts"
 
-import { Uint16 } from "./dep.ts";
+import { vector16, sanitize } from "./dep.ts";
 
+/**
+ * 00 15 00 06 00 00 00 00 00 00
+   |---| |---| |---------------|
+     |     |           |
+     |     |           \- extension_data: 6 zero bytes
+     |     |
+     |     \------------- 16-bit, extension_data length
+     |
+     \------------------- extension_type for padding extension
+ */
 export class Padding extends Uint8Array {
-   static fromLength(len){ return new Padding(len)}
+   static fromLength(len){ 
+      const padding = new Uint8Array(len)
+      return new Padding(vector16(padding))
+   }
    static from(array){
-      const copy = Uint8Array.from(array);
-      const lengthOf = Uint16.from(copy).value;
-      return new Padding(lengthOf)
+      return new Padding(array)
    }
    constructor(...args){
+      sanitize(args, {max: 2**16-1})
       super(...args);
    }
 }

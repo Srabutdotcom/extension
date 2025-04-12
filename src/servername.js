@@ -1,81 +1,102 @@
 //@ts-self-types="../type/servername.d.ts"
-import { Constrained, parseItems, Struct, Uint16 } from "./dep.ts";
+import { parseItems, sanitize, uint16, unity } from "./dep.ts";
 //LINK - https://datatracker.ietf.org/doc/html/rfc6066#section-3
 
-export class HostName extends Constrained {
-   opaque
+const encoder = new TextEncoder
+const decoder = new TextDecoder
+const MAX16_1 = 65535
+
+/**
+ * ```
+ * opaque HostName<1..2^16-1>;
+ * ```
+ */
+export class HostName extends Uint8Array {
+   #opaque;
+
    static fromName(hostName) {
-      const hostNameByte = new TextEncoder().encode(hostName);
-      return new HostName(hostNameByte);
+      hostName = encoder.encode(hostName)
+      return new HostName(unity(uint16(hostName.length), hostName));
    }
 
    static from(array) {
-      const copy = Uint8Array.from(array);
-      const lengthOf = Uint16.from(copy.subarray(0, 2)).value;
-      const hostName = copy.subarray(2, 2 + lengthOf);
-      return new HostName(hostName);
+      return new HostName(array);
    }
 
-   constructor(opaque) {
-      super(1, 65535, opaque);
-      this.opaque = opaque;
+   constructor(...args) {
+      sanitize(args, { min: 1, max: MAX16_1 });
+      super(...args);
+   }
+
+   get opaque() {
+      this.#opaque ||= this.subarray(2);
+      return this.#opaque.view;
    }
 
    get name() {
-      return new TextDecoder().decode(this.opaque);
+      return decoder.decode(this.subarray(2));
    }
 }
 
-export class ServerName extends Struct {
-   hostname;
+/**
+ * ```
+ * struct {
+          NameType name_type;
+          select (name_type) {
+              case host_name: HostName;
+          } name;
+      } ServerName;
 
-   static fromName(name) {
-      const hostName = HostName.fromName(name);
-      return new ServerName(hostName);
+   enum {
+          host_name(0), (255)
+      } NameType;
+   ```
+ */
+export class ServerName extends Uint8Array {
+   #hostName
+   
+   static fromName(hostName) {
+      hostName = HostName.fromName(hostName);
+      return new ServerName(unity(0, hostName))
    }
-
-   static from(array) {
-      const copy = Uint8Array.from(array);
-      const nameType = copy[0];
-      if (nameType !== 0) {
-         throw new TypeError("Expected nameType of 0 (host_name)");
-      }
-      const hostname = HostName.from(copy.subarray(1));
-      return new ServerName(hostname);
+   static from(array) { return new ServerName(array) }
+   constructor(...args) {
+      sanitize(args, { start: 1, min: 1, max: MAX16_1 });
+      super(...args)
    }
-
-   constructor(hostname) {
-      super(Uint8Array.of(0), hostname);
-      this.hostname = hostname;
-   }
-
    get name() {
-      return this.hostname.name;
+      this.#hostName ??= HostName.from(this.subarray(1));
+      return this.#hostName.name;
    }
-
-   get byte() { return Uint8Array.from(this) }
 }
 
-export class ServerNameList extends Constrained {
-   serverName
-   static fromName(...names) {
-      const serverNames = names.map(name => ServerName.fromName(name));
-      return new ServerNameList(...serverNames)
+/**
+ * ```
+ * struct {
+          ServerName server_name_list<1..2^16-1>
+      } ServerNameList;
+   ```
+ */
+export class ServerNameList extends Uint8Array {
+   #serverNames;
+
+   static fromNames(...names) {
+      const serverNames = unity(...names.map(name => ServerName.fromName(name)))
+      return new ServerNameList(unity(uint16(serverNames.length), serverNames));
    }
+
    static from(array) {
-      const copy = Uint8Array.from(array);
-      const lengthOf = Uint16.from(copy).value;
-      const serverNames = parseItems(copy,2, lengthOf,ServerName)// new Set;
-      /* let offset = 2;
-      while (true) {
-         const serverName = ServerName.from(copy.subarray(offset)); offset += serverName.byte.length;
-         serverNames.add(serverName);
-         if (offset >= lengthOf + 2) break
-      } */
-      return new ServerNameList(...serverNames)
+      return new ServerNameList(array);
    }
-   constructor(...serverNames) {
-      super(1, 2 ** 16 - 1, ...serverNames);
-      this.serverNames = serverNames
+
+   constructor(...args) {
+      sanitize(args, { min: 1, max: MAX16_1 });
+      super(...args);
+   }
+
+   get serverNames() {
+      this.#serverNames ||= parseItems(this, 2, this.length - 2, ServerName);
+      return this.#serverNames;
    }
 }
+

@@ -4,16 +4,9 @@ import { Uint16 } from "./dep.ts";
 /**
  * Represents the Record Size Limit in a TLS context, extending Uint16.
  */
-export class RecordSizeLimit extends Uint16 {
+export class RecordSizeLimit extends Uint16 {}
 
-   constructor(value) {
-      super(value)
-   }
+/* const test_0 = RecordSizeLimit.fromValue(300);
+const test_1 = RecordSizeLimit.from(test_0);
 
-   static from(array) {
-      const copy = Uint8Array.from(array)
-      return new RecordSizeLimit(copy)
-   }
-
-   static fromValue(value) { new RecordSizeLimit(value) }
-}
+const _null = null; */

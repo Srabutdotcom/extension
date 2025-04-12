@@ -1,5 +1,31 @@
 //@ts-self-types="../type/offeredpsks.d.ts"
-import { Byte, parseItems, Uint16, Uint32 } from "./dep.ts";
+import { sanitize, Uint32, Uint16, unity, vector, vector16 } from "./dep.ts";
+import { parseItems } from "./utils.js"
+
+export class TicketAge extends Uint32 {}
+
+/**
+ * Represents an opaque identity<1..2^16-1>;
+ */
+export class Identity extends Uint8Array {
+
+   static fromValue(value) {
+      return new Identity(vector16(value));
+   }
+
+   static from(array) {
+      return new Identity(array);
+   }
+
+   constructor(...args) {
+      sanitize(args, { min: 1, max: 65535 });
+      super(...args);
+   }
+
+   get value() {
+      return this.subarray(2);
+   }
+}
 
 /**
  * ```
@@ -21,22 +47,13 @@ import { Byte, parseItems, Uint16, Uint32 } from "./dep.ts";
    derived via the key schedule from the corresponding PSK which is
    being offered (see Section 7.1).
  */
-export class PskBinderEntry extends Byte {
-   static sanitize(args) {
-      if (args[0] instanceof Uint8Array) {
-         const lengthOf = args[0][0];
-         if (lengthOf < 32 || lengthOf > 255) throw new RangeError(`Length of PskBinderEntry should be between 32 and 255`);
-         args[0] = args[0].slice(0, 1 + lengthOf)
-      }
-   }
+export class PskBinderEntry extends Uint8Array {
    static fromBinder(binder) {
-      binder = Byte.create(binder);
-      binder.prepend([binder.length]);
-      return new PskBinderEntry(binder)
+      return new PskBinderEntry(vector(binder, { min: 32, max: 255 }))
    }
    static from(array) { return new PskBinderEntry(array) }
    constructor(...args) {
-      PskBinderEntry.sanitize(args)
+      sanitize(args, { min: 32, max: 255 })
       super(...args)
    }
    get binder() {
@@ -65,14 +82,22 @@ export class PskIdentity extends Uint8Array {
    #lengthOf
    #identity
    #ticketAge
+   static sanitize(args) {
+      const a0 = args[0];
+      if (a0 instanceof Uint8Array) {
+         const lengthOf = Uint16.from(a0).value;
+         args[0] = args[0].subarray(0, lengthOf + 6);
+         return
+      }
+   }
    static fromIdentityAndTicketAge(identity, ticketAge) {
-      const array = Byte.create(identity);
-      array.prepend(Uint16.from(identity.length));
-      array.append(Uint32.from(ticketAge));
-      return PskIdentity.from(array)
+      identity = Identity.fromValue(identity);//vector(identity, { min: 1, max: 2 ** 16 - 1 })
+      ticketAge = TicketAge.from(ticketAge);//ticketAge.subarray(0, 4)
+      return PskIdentity.from(unity(identity, ticketAge))
    }
    static from(array) { return new PskIdentity(array) }
    constructor(...args) {
+      PskIdentity.sanitize(args);
       super(...args)
    }
 
@@ -98,24 +123,13 @@ export class PskIdentity extends Uint8Array {
  */
 export class Identities extends Uint8Array {
    #identities
-   static sanitize(args) {
-      if (args[0] instanceof Uint8Array) {
-         const lengthOf = Uint16.from(args[0]).value;
-         if (lengthOf < 7 || lengthOf > 2 ** 16 - 1) throw new RangeError(`Length should be between 7 and 2**16-1`);
-         args[0] = args[0].slice(0, 2 + lengthOf)
-      }
-   }
    static fromIdentities(...identities) {
-      const array = identities.reduce((previous, current) => {
-         previous.append(current);
-         return previous
-      }, Byte.create())
-      array.prepend(Uint16.fromValue(array.length));
-      return Identities.from(array)
+      identities = unity(...identities)
+      return Identities.from(vector(identities, { min: 7, max: 2 ** 16 - 1 }))
    }
    static from(array) { return new Identities(array) }
    constructor(...args) {
-      Identities.sanitize(args)
+      sanitize(args, { min: 7, max: 2 ** 16 - 1 })
       super(...args)
    }
    get identities() {
@@ -133,25 +147,13 @@ export class Identities extends Uint8Array {
       below.
  */
 export class Binders extends Uint8Array {
-   static sanitize(args) {
-      if (args[0] instanceof Uint8Array) {
-         const lengthOf = Uint16.from(args[0]).value;
-         if (lengthOf < 33 || lengthOf > 2 ** 16 - 1) throw new RangeError(`Length of PskBinderEntry should be between 33 and 2**16-1`);
-         args[0] = args[0].slice(0, 2 + lengthOf)
-      }
-   }
    static fromBinders(...binders) {
-      const joined = binders.reduce((previous, current) => {
-         current = PskBinderEntry.fromBinder(current);
-         previous.append(current);
-         return previous
-      }, Byte.create())
-      joined.prepend(Uint16.fromValue(joined.length));
-      return new Binders(joined)
+      binders = unity(...binders);
+      return new Binders(vector(binders, { min: 33, max: 2 ** 16 - 1 }))
    }
    static from(array) { return new Binders(array) }
    constructor(...args) {
-      Binders.sanitize(args)
+      sanitize(args, { min: 33, max: 2 ** 16 - 1 })
       super(...args)
    }
    get binders() {
@@ -178,13 +180,27 @@ export class Binders extends Uint8Array {
 export class OfferedPsks extends Uint8Array {
    #identities
    #binders
-   static fromIdentitiesAndBinders(identities, binders){
-      const joined = Byte.create(identities);
-      joined.append(binders);
-      return OfferedPsks.from(joined)
+   static sanitize(args) {
+      const a0 = args[0];
+      if (a0 instanceof Uint8Array) {
+         const identities = Identities.from(a0);
+         if (a0.length >= identities.length) {
+            const endIndex = a0.length > identities.length
+               ? identities.length + Binders.from(a0.subarray(identities.length)).length
+               : identities.length;
+            args[0] = args[0].subarray(0, endIndex);
+            return
+         }
+      }
+   }
+   static fromIdentitiesAndBinders(identities, binders) {
+      identities = Identities.from(identities);
+      binders = Binders.from(binders)
+      return OfferedPsks.from(unity(identities, binders))
    }
    static from(array) { return new OfferedPsks(array) }
    constructor(...args) {
+      OfferedPsks.sanitize(args)
       super(...args)
    }
    get identities() {
@@ -197,7 +213,7 @@ export class OfferedPsks extends Uint8Array {
    get binders() {
       if (this.#binders) return this.#binders;
       const start = this.#identities.length;
-      if (start == this.length) return undefined; // binders may have no initial data
+      if (start == this.length) return undefined; // binders may have no data
       this.#binders ||= Binders.from(this.subarray(start));
       return this.#binders.binders
    }

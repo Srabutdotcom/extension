@@ -10,7 +10,7 @@ Deno.test("ServerName", () => {
 })
 
 Deno.test("ServerNameList", () => {
-   const test = ServerNameList.fromName('local');
+   const test = ServerNameList.fromNames('local');
    const back = ServerNameList.from(test);
    assertEquals(test, back)
 })
@@ -23,4 +23,4 @@ const sni_0 = HexaDecimal.fromString(
     6f 75 74 6c 6f 6f 6b 2e 63 6f 6d
    `).byte
 
-const sni_1 = ServerNameList.fromName("smtp-mail.outlook.com");
+const sni_1 = ServerNameList.fromNames("smtp-mail.outlook.com");

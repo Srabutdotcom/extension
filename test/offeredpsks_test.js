@@ -1,9 +1,11 @@
-import { Byte, parseItems, Uint16, Uint32 } from "../src/dep.ts";
-import { PskBinderEntry, PskIdentity, Identities, Binders, OfferedPsks } from "../src/offeredpsks.js"
+import { Byte } from "../src/dep.ts";
+import { PskBinderEntry, PskIdentity, Binders, OfferedPsks } from "../src/offeredpsks.js"
+
+// TODO
 
 const offeredPsks = Uint8Array.of(0, 184, 0, 178, 44, 3, 93, 130, 147, 89, 238, 95, 247, 175, 78, 201, 0, 0, 0, 0, 38, 42, 100, 148, 220, 72, 109, 44, 138, 52, 203, 51, 250, 144, 191, 27, 0, 112, 173, 60, 73, 136, 131, 201, 54, 124, 9, 162, 190, 120, 90, 188, 85, 205, 34, 96, 151, 163, 169, 130, 17, 114, 131, 248, 42, 3, 161, 67, 239, 211, 255, 93, 211, 109, 100, 232, 97, 190, 127, 214, 29, 40, 39, 219, 39, 156, 206, 20, 80, 119, 212, 84, 163, 102, 77, 78, 109, 164, 210, 158, 224, 55, 37, 166, 164, 218, 252, 208, 252, 103, 210, 174, 167, 5, 41, 81, 62, 61, 162, 103, 127, 165, 144, 108, 91, 63, 125, 143, 146, 242, 40, 189, 164, 13, 218, 114, 20, 112, 249, 251, 242, 151, 181, 174, 166, 23, 100, 111, 172, 92, 3, 39, 46, 151, 7, 39, 198, 33, 167, 145, 65, 239, 95, 125, 230, 80, 94, 91, 251, 195, 136, 233, 51, 67, 105, 64, 147, 147, 74, 228, 211, 87, 250, 214, 170, 203);
 
-const binder = Byte.create(`3a dd 4f b2 d8 fd f8 22 a0 ca 3c f7 67 8e f5 e8 8d
+const binder = Byte.fromHex(`3a dd 4f b2 d8 fd f8 22 a0 ca 3c f7 67 8e f5 e8 8d
          ae 99 01 41 c5 92 4d 57 bb 6f a3 1b 9e 5f 9d`);
 const binder_0 = crypto.getRandomValues(new Uint8Array(32))
 
@@ -16,9 +18,9 @@ const binders_0 = Binders.fromBinders(binder, binder_0);
 
 const test_0 = OfferedPsks.from(offeredPsks);
 test_0.identities
-test_0.binders;
+test_0.binders; // initially, they don't have binders
 
-const offeredPsksWithBinders = Byte.create(`
+const offeredPsksWithBinders = Byte.fromHex(`
    00 b8 00 b2 2c 03 5d 82 93 59 ee 5f f7 af 4e c9 00
    00 00 00 26 2a 64 94 dc 48 6d 2c 8a 34 cb 33 fa 90 bf 1b 00 70
    ad 3c 49 88 83 c9 36 7c 09 a2 be 78 5a bc 55 cd 22 60 97 a3 a9
@@ -37,8 +39,8 @@ test_1.identities
 test_1.binders;
 
 const test_2 = OfferedPsks.fromIdentitiesAndBinders(
-   Identities.fromIdentities(pskIdentity_0),
-   Binders.fromBinders(binder)
+   test_1.identities,
+   test_1.binders
 )
 
 const _null = null;

@@ -1,5 +1,5 @@
 //@ts-self-types = "../type/supportedgroup.d.ts"
-import { Uint16, NamedGroup, Byte } from "./dep.ts"
+import { Uint16, NamedGroup, sanitize, unity, vector16 } from "./dep.ts"
 import { parseItems } from "./utils.js";
 
 /* export class NamedGroupList extends Constrained {
@@ -36,14 +36,8 @@ export class NamedGroupList extends Uint8Array {
    }
 
    static fromGroups(...named_group_list) {
-      const array = named_group_list.reduce((prev, curr) => {
-         curr = (curr instanceof NamedGroup) ? curr.byte :
-            (curr instanceof Uint8Array) ? curr : new Uint8Array
-         prev.append(curr);
-         return prev;
-      }, Byte.create());
-      array.prepend(Uint16.fromValue(array.length));
-      return new NamedGroupList(array);
+      const groups = unity(...named_group_list.map(e=>e.byte))
+      return new NamedGroupList(vector16(groups));
    }
 
    static from(array) {
@@ -51,7 +45,8 @@ export class NamedGroupList extends Uint8Array {
    }
 
    constructor(...args) {
-      NamedGroupList.sanitize(args);
+      sanitize(args, { min: 2, max: 2 ** 16 - 1 })
+      
       super(...args);
    }
 

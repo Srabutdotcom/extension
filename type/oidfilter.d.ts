@@ -1,136 +1,134 @@
-import { Constrained, Struct } from "../src/dep.ts";
-
 /**
- * Represents an OIDFilter containing a certificate extension OID and its associated values.
+ * ```
+ * struct {
+ * opaque certificate_extension_oid<1..2^8-1>;
+ * opaque certificate_extension_values<0..2^16-1>;
+ * } OIDFilter;
+ * ```
  */
-export class OIDFilter extends Struct {
-  /**
-   * The certificate extension OID.
-   */
-  certificate_extension_oid: CertificateExtensionOid;
-
-  /**
-   * The certificate extension values.
-   */
+export declare class OIDFilter extends Uint8Array {
+  certificate_extension_oid: CertificateExtensionOID;
   certificate_extension_values: CertificateExtensionValues;
 
   /**
-   * Parses an `OIDFilter` instance from a `Uint8Array`.
-   *
-   * @param array - The serialized array containing the OIDFilter data.
-   * @returns A new `OIDFilter` instance.
+   * Sanitizes arguments before constructing the OIDFilter.
+   * @param {any[]} args - The arguments array.
+   */
+  static sanitize(args: any[]): void;
+
+  /**
+   * Creates an OIDFilter instance from a Uint8Array.
+   * @param {Uint8Array} array - The Uint8Array to create the instance from.
+   * @returns {OIDFilter} - A new OIDFilter instance.
    */
   static from(array: Uint8Array): OIDFilter;
 
   /**
-   * Constructs a new `OIDFilter` instance.
-   *
-   * @param certificate_extension_oid - The `CertificateExtensionOid` object.
-   * @param certificate_extension_values - The `CertificateExtensionValues` object.
+   * Constructs an OIDFilter instance.
+   * @param {...any} args - Arguments to pass to the Uint8Array constructor.
    */
-  constructor(
-    certificate_extension_oid: CertificateExtensionOid,
-    certificate_extension_values: CertificateExtensionValues,
-  );
+  constructor(...args: any[]);
 }
 
 /**
- * Represents an extension that contains a list of `OIDFilter` objects.
+ * ```
+ * struct {
+ * OIDFilter filters<0..2^16-1>;
+ * } OIDFilterExtension;
+ * ```
  */
-export class OIDFilterExtension extends Constrained {
-  /**
-   * The array of `OIDFilter` instances.
-   */
-  oidFilters: OIDFilter[];
+export declare class OIDFilterExtension extends Uint8Array {
+  #oidFilters: OIDFilter[] | undefined;
 
   /**
-   * Parses an `OIDFilterExtension` instance from a `Uint8Array`.
-   *
-   * @param array - The serialized array containing the OIDFilterExtension data.
-   * @returns A new `OIDFilterExtension` instance.
+   * Creates an OIDFilterExtension instance from a variable number of OIDFilter arrays.
+   * @param {...Uint8Array[]} oidFilters - The OIDFilter arrays.
+   * @returns {OIDFilterExtension} - A new OIDFilterExtension instance.
+   */
+  static fromOidFilters(...oidFilters: Uint8Array[]): OIDFilterExtension;
+
+  /**
+   * Creates an OIDFilterExtension instance from a Uint8Array.
+   * @param {Uint8Array} array - The Uint8Array to create the instance from.
+   * @returns {OIDFilterExtension} - A new OIDFilterExtension instance.
    */
   static from(array: Uint8Array): OIDFilterExtension;
 
   /**
-   * Constructs a new `OIDFilterExtension` instance.
-   *
-   * @param oidfilters - The list of `OIDFilter` objects.
+   * Constructs an OIDFilterExtension instance.
+   * @param {...any} args - Arguments to pass to the Uint8Array constructor.
    */
-  constructor(...oidfilters: OIDFilter[]);
+  constructor(...args: any[]);
+
+  /**
+   * Gets the OIDFilter array from the OIDFilterExtension.
+   * @returns {OIDFilter[]} - The OIDFilter array.
+   */
+  get oidFilters(): OIDFilter[];
 }
 
 /**
- * Represents an opaque certificate extension OID of length 1 to 255.
+ * Represents an opaque certificate_extension_oid<1..2^8-1>;
  */
-export class CertificateExtensionOid extends Constrained {
+export declare class CertificateExtensionOID extends Uint8Array {
   /**
-   * The raw byte representation of the OID.
+   * Creates a CertificateExtensionOID instance from a Uint8Array value.
+   * @param {Uint8Array} value - The Uint8Array value.
+   * @returns {CertificateExtensionOID} - A new CertificateExtensionOID instance.
    */
-  opaque: Uint8Array;
+  static fromValue(value: Uint8Array): CertificateExtensionOID;
 
   /**
-   * Creates a `CertificateExtensionOid` from its raw byte array.
-   *
-   * @param opaque - The raw OID data.
-   * @returns A new `CertificateExtensionOid` instance.
+   * Creates a CertificateExtensionOID instance from a Uint8Array.
+   * @param {Uint8Array} array - The Uint8Array to create the instance from.
+   * @returns {CertificateExtensionOID} - A new CertificateExtensionOID instance.
    */
-  static fromOpaque(opaque: Uint8Array): CertificateExtensionOid;
+  static from(array: Uint8Array): CertificateExtensionOID;
 
   /**
-   * Parses a `CertificateExtensionOid` instance from a `Uint8Array`.
-   *
-   * @param array - The serialized array containing the OID data.
-   * @returns A new `CertificateExtensionOid` instance.
+   * Constructs a CertificateExtensionOID instance.
+   * @param {...any} args - Arguments to pass to the Uint8Array constructor.
    */
-  static from(array: Uint8Array): CertificateExtensionOid;
+  constructor(...args: any[]);
 
   /**
-   * Constructs a new `CertificateExtensionOid` instance.
-   *
-   * @param opaque - The raw OID data as a `Uint8Array`.
+   * Get the actual OID value without the length prefix.
+   * @returns {Uint8Array} - The OID value.
    */
-  constructor(opaque: Uint8Array);
+  get value(): Uint8Array;
 }
 
 /**
- * Represents opaque certificate extension values of length 0 to 65535.
+ * Represents an opaque certificate_extension_values<0..2^16-1>;
  */
-export class CertificateExtensionValues extends Constrained {
+export declare class CertificateExtensionValues extends Uint8Array {
   /**
-   * The raw byte representation of the values.
+   * Creates a CertificateExtensionValues instance from a Uint8Array value.
+   * @param {Uint8Array} value - The Uint8Array value.
+   * @returns {CertificateExtensionValues} - A new CertificateExtensionValues instance.
    */
-  opaque: Uint8Array;
+  static fromValue(value: Uint8Array): CertificateExtensionValues;
 
   /**
-   * Creates a `CertificateExtensionValues` from its raw byte array.
-   *
-   * @param opaque - The raw values data.
-   * @returns A new `CertificateExtensionValues` instance.
-   */
-  static fromOpaque(opaque: Uint8Array): CertificateExtensionValues;
-
-  /**
-   * Parses a `CertificateExtensionValues` instance from a `Uint8Array`.
-   *
-   * @param array - The serialized array containing the values data.
-   * @returns A new `CertificateExtensionValues` instance.
+   * Creates a CertificateExtensionValues instance from a Uint8Array.
+   * @param {Uint8Array} array - The Uint8Array to create the instance from.
+   * @returns {CertificateExtensionValues} - A new CertificateExtensionValues instance.
    */
   static from(array: Uint8Array): CertificateExtensionValues;
 
   /**
-   * Constructs a new `CertificateExtensionValues` instance.
-   *
-   * @param opaque - The raw values data as a `Uint8Array`.
+   * Constructs a CertificateExtensionValues instance.
+   * @param {...any} args - Arguments to pass to the Uint8Array constructor.
    */
-  constructor(opaque: Uint8Array);
+  constructor(...args: any[]);
+
+  /**
+   * Get the actual values without the length prefix.
+   * @returns {Uint8Array} - The values.
+   */
+  get value(): Uint8Array;
 }
 
-/**
- * Represents an empty array, extending `Uint8Array`.
- */
-export class PostHandshakeAuth extends Uint8Array {
-  /**
-   * Creates a new `PostHandshakeAuth` instance with a length of 0.
-   */
+export declare class PostHandshakeAuth extends Uint8Array {
   constructor();
 }

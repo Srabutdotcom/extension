@@ -74,7 +74,7 @@ export class SignatureSchemeList extends Uint8Array {
 
    get supported_signature_algorithms() {
       this.#supported_signature_algorithms ||= parseItems(this, 2, this.length - 2, SignatureScheme,
-         { store: new Map(), storeset: (store, item) => store.set(item, item) });
+         { store: [] });
       return this.#supported_signature_algorithms;
    }
 }

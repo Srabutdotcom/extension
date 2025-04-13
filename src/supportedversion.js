@@ -35,7 +35,7 @@ export class Versions extends Uint8Array {
       
    }
    get versions() { 
-      this.#versions ||= parseItems(this, 1, this.length - 1, ProtocolVersion)
+      this.#versions ||= parseItems(this, 1, this.length - 1, Version, {store: []})
       return this.#versions 
    }
 }

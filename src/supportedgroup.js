@@ -51,7 +51,7 @@ export class NamedGroupList extends Uint8Array {
    }
 
    get named_group_list() {
-      this.#named_group_list ||= parseItems(this, 2, this.length - 2, NamedGroup);
+      this.#named_group_list ||= parseItems(this, 2, this.length - 2, NamedGroup, {store: []});
       return this.#named_group_list;
    }
 }

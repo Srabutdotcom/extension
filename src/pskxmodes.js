@@ -51,7 +51,7 @@ export class PskKeyExchangeModes extends Uint8Array {
     }
 
     get ke_modes() {
-        this.#ke_modes ||= parseItems(this, 1, this.length - 1, PskKeyExchangeMode);
+        this.#ke_modes ||= parseItems(this, 1, this.length - 1, PskKeyExchangeMode, {store: []});
         return this.#ke_modes;
     }
 }

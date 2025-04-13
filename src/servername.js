@@ -1,5 +1,6 @@
 //@ts-self-types="../type/servername.d.ts"
-import { parseItems, sanitize, uint16, unity } from "./dep.ts";
+import { sanitize, uint16, unity } from "./dep.ts";
+import { parseItems } from "./utils.js"
 //LINK - https://datatracker.ietf.org/doc/html/rfc6066#section-3
 
 const encoder = new TextEncoder
@@ -95,7 +96,7 @@ export class ServerNameList extends Uint8Array {
    }
 
    get serverNames() {
-      this.#serverNames ||= parseItems(this, 2, this.length - 2, ServerName);
+      this.#serverNames ||= parseItems(this, 2, this.length - 2, ServerName, {store: []});
       return this.#serverNames;
    }
 }

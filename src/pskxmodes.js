@@ -37,7 +37,7 @@ export class PskKeyExchangeModes extends Uint8Array {
     #ke_modes;
 
     static fromModes(...ke_modes) {
-        ke_modes = unity(...ke_modes)
+        ke_modes = unity(...ke_modes.map(e=>e.byte))
         return new PskKeyExchangeModes(vector8(ke_modes));
     }
 

@@ -44,8 +44,10 @@ export class KeyShareClientHello extends Uint8Array {
    */
   constructor(...keyShareEntries: KeyShareEntry[]);
 
-  /** The key share entries in the ClientHello. */
-  keyShareEntries: KeyShareEntry[];
+  /**
+    * Parsed client shares as a Map where the key is a NamedGroup and value is key exchange data.
+    */
+  get client_shares(): Map<NamedGroup, Uint8Array>;
 }
 
 /**

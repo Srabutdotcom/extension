@@ -52,7 +52,6 @@ export class KeyShareEntry extends Uint8Array {
    ```
  */
 export class KeyShareClientHello extends Uint8Array {
-   keyShareEntries = new Map
    #client_shares //= new Map
    static fromKeyShareEntries(...keyShareEntries) {
       keyShareEntries = unity(...keyShareEntries)

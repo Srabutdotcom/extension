@@ -2,12 +2,14 @@ import { Uint32 } from "../src/dep.ts"
 
 /**
  * Represents a 32-bit unsigned integer value, extended from Uint32.
+ * @version __VERSION__
  */
 export class TicketAge extends Uint32 {}
 
 
 /**
  * Represents an opaque identity<1..2^16-1>;
+ * @version __VERSION__
  */
 export class Identity extends Uint8Array {
 
@@ -54,6 +56,7 @@ export class Identity extends Uint8Array {
    message (Section 4.4.4) but with the BaseKey being the binder_key
    derived via the key schedule from the corresponding PSK which is
    being offered (see Section 7.1).
+   @version __VERSION__
  */
 export class PskBinderEntry extends Uint8Array {
    
@@ -93,7 +96,8 @@ export class PskBinderEntry extends Uint8Array {
       Section 4.2.11.1 describes how to form this value for identities
       established via the NewSessionTicket message.  For identities
       established externally, an obfuscated_ticket_age of 0 SHOULD be
-      used, and servers MUST ignore the value.  
+      used, and servers MUST ignore the value. 
+   @version __VERSION__ 
  */
 export class PskIdentity extends Uint8Array {
    /**
@@ -132,6 +136,7 @@ export class PskIdentity extends Uint8Array {
       negotiate with the server.  If sent alongside the "early_data"
       extension (see Section 4.2.10), the first identity is the one used
       for 0-RTT data.
+   @version __VERSION__
  */
 export class Identities extends Uint8Array {
    /**
@@ -168,6 +173,7 @@ export class Identities extends Uint8Array {
  * binders:  A series of HMAC values, one for each value in the
       identities list and in the same order, computed as described
       below.
+   @version __VERSION__
  */
 export class Binders extends Uint8Array {
    /**
@@ -212,6 +218,7 @@ export class Binders extends Uint8Array {
    binders:  A series of HMAC values, one for each value in the
       identities list and in the same order, computed as described
       below.
+   @version __VERSION__
  */
 export class OfferedPsks extends Uint8Array {
    /**

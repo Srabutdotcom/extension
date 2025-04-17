@@ -1,5 +1,6 @@
 /**
  * Represents an empty byte array with a fixed length of zero.
+ * @version __VERSION__
  */
 export class Empty extends Uint8Array {
    /**
@@ -12,6 +13,7 @@ export class Empty extends Uint8Array {
   * Represents the Early Data Indication as described in 
   * [RFC 8446 Section 4.2.10](https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.10).
   * Extends `Uint8Array` to handle Early Data Indication functionality.
+  * @version __VERSION__
   */
  export class EarlyDataIndication extends Uint8Array {
    /**

@@ -10,7 +10,7 @@ import { SignatureScheme } from "../src/dep.ts";
  *     SignatureScheme supported_signature_algorithms<2..2^16-2>;
  * } SignatureSchemeList;
  * ```
- * @version __VERSION__
+ * @version 0.5.8
  */
 export class SignatureSchemeList extends Uint8Array {
   /** @internal */

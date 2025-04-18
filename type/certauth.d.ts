@@ -1,6 +1,6 @@
 /**
  * Represents a Distinguished Name as a `Uint8Array`.
- * @version __VERSION__
+ * @version 0.5.8
  */
 export declare class DistinguishedName extends Uint8Array {
   #lengthOf: Uint8Array;
@@ -41,7 +41,7 @@ export declare class DistinguishedName extends Uint8Array {
 
 /**
  * Represents a Certificate Authorities Extension as a `Uint8Array`.
- * @version __VERSION__
+ * @version 0.5.8
  */
 export declare class CertificateAuthoritiesExtension extends Uint8Array {
   #lengthOf: number;

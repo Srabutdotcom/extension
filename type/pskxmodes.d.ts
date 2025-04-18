@@ -13,7 +13,7 @@ import { PskKeyExchangeMode } from "../src/dep.ts";
  * ## PSK Key Exchange Modes:
  * - **psk_ke**: PSK-only key establishment. In this mode, the server **MUST NOT** supply a `key_share` value.
  * - **psk_dhe_ke**: PSK with (EC)DHE key establishment. In this mode, both client and server **MUST** supply `key_share` values.
- * @version 0.5.9
+ * @version 0.6.0
  */
 declare class PskKeyExchangeModes extends Uint8Array {
   /**

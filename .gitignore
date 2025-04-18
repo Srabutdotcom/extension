@@ -1,4 +1,5 @@
-/.vscode
-/deno.lock
+/.vscode/
+./deno.lock
 ./commit.sh
 ./version.js
+./.gitignore

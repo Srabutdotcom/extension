@@ -8,7 +8,7 @@ import { NamedGroup } from "../src/dep.ts";
  *       NamedGroup named_group_list<2..2^16-1>;
  * } NamedGroupList;
  * ```
- * @version 0.5.9
+ * @version 0.6.0
  */
 export class NamedGroupList extends Uint8Array {
   /**

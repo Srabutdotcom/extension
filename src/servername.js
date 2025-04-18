@@ -1,6 +1,6 @@
 //@ts-self-types="../type/servername.d.ts"
 import { sanitize, uint16, unity } from "./dep.ts";
-import { parseItems } from "./utils.js"
+import { parseItems } from "./dep.ts"
 //LINK - https://datatracker.ietf.org/doc/html/rfc6066#section-3
 
 const encoder = new TextEncoder

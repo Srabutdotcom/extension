@@ -1,6 +1,6 @@
 //@ts-self-types = "../type/supportedgroup.d.ts"
 import { Uint16, NamedGroup, sanitize, unity, vector16 } from "./dep.ts"
-import { parseItems } from "./utils.js";
+import { parseItems } from "./dep.ts";
 
 /* export class NamedGroupList extends Constrained {
    static from(array) {

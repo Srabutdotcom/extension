@@ -1,6 +1,6 @@
 //@ts-self-types="../type/pskxmodes.d.ts"
 import { PskKeyExchangeMode, sanitize, unity, vector8 } from "./dep.ts";
-import { parseItems } from "./utils.js";
+import { parseItems } from "./dep.ts";
 
 // TODO
 

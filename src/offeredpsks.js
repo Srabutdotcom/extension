@@ -1,6 +1,6 @@
 //@ts-self-types="../type/offeredpsks.d.ts"
 import { sanitize, Uint32, Uint16, unity, vector, vector16 } from "./dep.ts";
-import { parseItems } from "./utils.js"
+import { parseItems } from "./dep.ts"
 
 export class TicketAge extends Uint32 {}
 

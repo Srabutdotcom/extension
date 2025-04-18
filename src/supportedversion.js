@@ -1,6 +1,6 @@
 //@ts-self-types="../type/supportedversion.d.ts"
 import { sanitize, Uint16, unity, vector8, Version } from "./dep.ts";
-import { parseItems } from "./utils.js"
+import { parseItems } from "./dep.ts"
 
 export class ProtocolVersion extends Uint16 {
    static fromVersion(version){

@@ -1,7 +1,7 @@
 //@ts-self-types = "../type/signaturealgo.d.ts"
 import { sanitize, unity, vector16 } from "./dep.ts";
 import { SignatureScheme } from "./dep.ts";
-import { parseItems } from "./utils.js";
+import { parseItems } from "./dep.ts";
 
 /* export class Supported_signature_algorithms extends Constrained {
    static default(){

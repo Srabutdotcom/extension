@@ -1,6 +1,6 @@
 //@ts-self-types = "../type/keyshare.d.ts"
 import { Uint16, NamedGroup, sanitize, unity, vector, getUint16 } from "./dep.ts";
-import { parseItems } from "./utils.js";
+import { parseItems } from "./dep.ts";
 
 const MAX16_1 = 2 ** 16 - 1
 

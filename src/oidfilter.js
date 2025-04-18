@@ -2,7 +2,7 @@
 // LINK - https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.5
 
 import { sanitize, vector16, vector8 } from "./dep.ts";
-import { parseItems } from "./utils.js"
+import { parseItems } from "./dep.ts"
 
 /**
  * ```

@@ -2,7 +2,7 @@ import { Uint16 } from "../src/dep.ts";
 
 /**
  * Represents the Record Size Limit in a TLS context, extending `Uint16`.
- * @version 0.5.8
+ * @version 0.5.9
  */
 export class RecordSizeLimit extends Uint16 {
   /**

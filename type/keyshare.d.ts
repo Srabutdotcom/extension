@@ -2,7 +2,7 @@ import { NamedGroup } from "../src/dep.ts";
 
 /**
  * Represents a KeyShareEntry structure.
- * @version 0.5.8
+ * @version 0.5.9
  */
 export class KeyShareEntry extends Uint8Array {
   /** Parses a KeyShareEntry from a NamedGroup */
@@ -23,7 +23,7 @@ export class KeyShareEntry extends Uint8Array {
 
 /**
  * Represents the KeyShare extension in the ClientHello message.
- * @version 0.5.8
+ * @version 0.5.9
  */
 export class KeyShareClientHello extends Uint8Array {
   /**
@@ -54,7 +54,7 @@ export class KeyShareClientHello extends Uint8Array {
 
 /**
  * Represents the KeyShare extension in the HelloRetryRequest message.
- * @version 0.5.8
+ * @version 0.5.9
  */
 export class KeyShareHelloRetryRequest extends Uint8Array {
   /**
@@ -83,7 +83,7 @@ export class KeyShareHelloRetryRequest extends Uint8Array {
 
 /**
  * Represents the KeyShare extension in the ServerHello message.
- * @version 0.5.8
+ * @version 0.5.9
  */
 export class KeyShareServerHello extends Uint8Array {
   /**

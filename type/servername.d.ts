@@ -4,7 +4,7 @@ import { Byte } from "@aicone/byte"
  * ```
  * opaque HostName<1..2^16-1>;
  * ```
- * @version 0.5.8
+ * @version 0.5.9
  */
 export class HostName extends Byte {
   /**
@@ -73,7 +73,7 @@ export class HostName extends Byte {
  * host_name(0), (255)
  * } NameType;
  * ```
- * @version 0.5.8
+ * @version 0.5.9
  */
 export class ServerName extends Byte {
   /**
@@ -128,7 +128,7 @@ export class ServerName extends Byte {
  * ServerName server_name_list<1..2^16-1>
  * } ServerNameList;
  * ```
- * @version 0.5.8
+ * @version 0.5.9
  */
 export class ServerNameList extends Byte {
   /**

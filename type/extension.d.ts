@@ -3,7 +3,7 @@ import { ExtensionType } from "@tls/enum";
 /**
  * Represents a TLS Extension as a byte array.
  * Used in the TLS handshake process to store extension type and data.
- * @version 0.5.8
+ * @version 0.5.9
  */
 export declare class Extension extends Uint8Array {
   /**

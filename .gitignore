@@ -3,3 +3,4 @@
 ./commit.sh
 ./version.js
 ./.gitignore
+/play/

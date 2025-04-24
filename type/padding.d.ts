@@ -2,7 +2,7 @@
  * Represents a padding sequence used in cryptographic protocols.
  * -  Optionally adding, removing, or changing the length of the
       "padding" extension [RFC7685].
- * @version 0.6.0
+ * @version 0.6.1
  */
 export class Padding extends Uint8Array {
    /**

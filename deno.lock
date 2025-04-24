@@ -2,9 +2,9 @@
   "version": "4",
   "specifiers": {
     "jsr:@aicone/byte@~0.8.6": "0.8.6",
+    "jsr:@aicone/byte@~0.8.7": "0.8.7",
     "jsr:@noble/hashes@^1.7.2": "1.7.2",
-    "jsr:@std/assert@*": "1.0.12",
-    "jsr:@std/assert@^1.0.2": "1.0.12",
+    "jsr:@std/assert@^1.0.13": "1.0.13",
     "jsr:@std/internal@^1.0.6": "1.0.6",
     "jsr:@tls/enum@~0.9.7": "0.9.7",
     "jsr:@tls/parser@^0.0.3": "0.0.3",
@@ -19,11 +19,17 @@
         "npm:pvtsutils"
       ]
     },
+    "@aicone/byte@0.8.7": {
+      "integrity": "96249eee1d35aad0b7271e8ab280c166b16be118c7a7606861ba67b4141452b5",
+      "dependencies": [
+        "npm:pvtsutils"
+      ]
+    },
     "@noble/hashes@1.7.2": {
       "integrity": "537468975e88e1ab3f5a772657b7143bd37d754ee0f0306188c9da11e2f404df"
     },
-    "@std/assert@1.0.12": {
-      "integrity": "08009f0926dda9cbd8bef3a35d3b6a4b964b0ab5c3e140a4e0351fbf34af5b9a",
+    "@std/assert@1.0.13": {
+      "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
       "dependencies": [
         "jsr:@std/internal"
       ]
@@ -34,7 +40,7 @@
     "@tls/enum@0.9.7": {
       "integrity": "01eacc59fca70a9e9014b781097a60d463bbe100710f612fe2ceef7225524234",
       "dependencies": [
-        "jsr:@aicone/byte",
+        "jsr:@aicone/byte@~0.8.6",
         "jsr:@noble/hashes",
         "npm:@noble/curves",
         "npm:@peculiar/x509"
@@ -318,8 +324,8 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@aicone/byte@~0.8.6",
-      "jsr:@std/assert@^1.0.2",
+      "jsr:@aicone/byte@~0.8.7",
+      "jsr:@std/assert@^1.0.13",
       "jsr:@tls/enum@~0.9.7",
       "jsr:@tls/parser@^0.0.3"
     ]

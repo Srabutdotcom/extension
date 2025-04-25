@@ -6,7 +6,7 @@
  *    opaque cookie<1..2^16-1>;
  * } Cookie;
  * ```
- * @version 0.6.2
+ * @version 0.6.3
  */
 export class Cookie extends Uint8Array {
    /**

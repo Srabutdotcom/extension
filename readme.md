@@ -3,7 +3,7 @@
 This project implements the [specific section] from
 [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446#autoid-24), focusing on
 the relevant TLS 1.3 protocol structures and processes.
-@version 0.6.2
+@version 0.6.3
 
 ## Work Status
 

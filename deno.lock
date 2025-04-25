@@ -7,7 +7,7 @@
     "jsr:@std/assert@*": "1.0.13",
     "jsr:@std/assert@^1.0.13": "1.0.13",
     "jsr:@std/internal@^1.0.6": "1.0.6",
-    "jsr:@tls/enum@~0.9.8": "0.9.8",
+    "jsr:@tls/enum@0.10": "0.10.0",
     "jsr:@tls/parser@^0.0.3": "0.0.3",
     "npm:@noble/curves@^1.9.0": "1.9.0",
     "npm:@peculiar/x509@^1.12.3": "1.12.3",
@@ -32,10 +32,10 @@
     "@std/internal@1.0.6": {
       "integrity": "9533b128f230f73bd209408bb07a4b12f8d4255ab2a4d22a1fd6d87304aca9a4"
     },
-    "@tls/enum@0.9.8": {
-      "integrity": "866aaea465d9abce4799282111d1260a6416cd32723d7d6bffd02448193ccb11",
+    "@tls/enum@0.10.0": {
+      "integrity": "cdb5c9a4ef9d120fc1b9d6013491b1caf992b45cb7b6970f2d669554956c7e4b",
       "dependencies": [
-        "jsr:@aicone/byte@~0.8.7",
+        "jsr:@aicone/byte@~0.8.8",
         "jsr:@noble/hashes",
         "npm:@noble/curves",
         "npm:@peculiar/x509"
@@ -321,7 +321,7 @@
     "dependencies": [
       "jsr:@aicone/byte@~0.8.8",
       "jsr:@std/assert@^1.0.13",
-      "jsr:@tls/enum@~0.9.8",
+      "jsr:@tls/enum@0.10",
       "jsr:@tls/parser@^0.0.3"
     ]
   }

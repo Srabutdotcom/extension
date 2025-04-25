@@ -2,7 +2,7 @@ import { Version } from "@tls/enum";
 
 /**
  * Represents a TLS protocol version as a `Uint8Array`.
- * @version 0.6.3
+ * @version 0.6.4
  */
 export class ProtocolVersion extends Uint8Array {
    /**

@@ -5,7 +5,7 @@
  * opaque certificate_extension_values<0..2^16-1>;
  * } OIDFilter;
  * ```
- * @version 0.6.3
+ * @version 0.6.4
  */
 export declare class OIDFilter extends Uint8Array {
   certificate_extension_oid: CertificateExtensionOID;
@@ -37,7 +37,7 @@ export declare class OIDFilter extends Uint8Array {
  * OIDFilter filters<0..2^16-1>;
  * } OIDFilterExtension;
  * ```
- * @version 0.6.3
+ * @version 0.6.4
  */
 export declare class OIDFilterExtension extends Uint8Array {
   #oidFilters: OIDFilter[] | undefined;
@@ -71,7 +71,7 @@ export declare class OIDFilterExtension extends Uint8Array {
 
 /**
  * Represents an opaque certificate_extension_oid<1..2^8-1>;
- * @version 0.6.3
+ * @version 0.6.4
  */
 export declare class CertificateExtensionOID extends Uint8Array {
   /**
@@ -103,7 +103,7 @@ export declare class CertificateExtensionOID extends Uint8Array {
 
 /**
  * Represents an opaque certificate_extension_values<0..2^16-1>;
- * @version 0.6.3
+ * @version 0.6.4
  */
 export declare class CertificateExtensionValues extends Uint8Array {
   /**
@@ -134,7 +134,7 @@ export declare class CertificateExtensionValues extends Uint8Array {
 }
 
 /**
- * @version 0.6.3
+ * @version 0.6.4
  */
 export declare class PostHandshakeAuth extends Uint8Array {
   constructor();
